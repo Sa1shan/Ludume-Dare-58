@@ -13,7 +13,6 @@ public class Interactable2D : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     void Reset()
     {
-        // auto-find Outline child and state machine to ease setup
         var t = transform.Find("Outline");
         if (t != null) outline = t.gameObject;
 
@@ -26,6 +25,23 @@ public class Interactable2D : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         if (outline) outline.SetActive(false);
         if (stateMachine == null) stateMachine = GetComponent<InteractableStateMachine>();
     }
+
+    void OnEnable()
+    {
+        if (outline) outline.SetActive(false);
+        if (stateMachine == null) stateMachine = GetComponent<InteractableStateMachine>();
+    }
+
+#if UNITY_EDITOR
+    void OnValidate()
+    {
+        // in editor, keep outline off by default to avoid confusion
+        if (outline != null && !Application.isPlaying)
+        {
+            outline.SetActive(false);
+        }
+    }
+#endif
 
     public void OnPointerEnter(PointerEventData eventData)
     {
