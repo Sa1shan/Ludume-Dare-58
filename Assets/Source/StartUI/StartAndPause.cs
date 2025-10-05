@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Source.StartUI
@@ -6,22 +5,55 @@ namespace Source.StartUI
     public class StartAndPause : MonoBehaviour
     {
         [SerializeField] private GameObject pauseMenu;
+        [SerializeField] private FirstPersonController player;
+        private bool _isPaused = false;
         private void Start()
         {
             Time.timeScale = 1;
+            pauseMenu.SetActive(false);
         }
 
-        void Update()
+        private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Time.timeScale = 0;
+                if (_isPaused)
+                {
+                    Resume();
+                }
+                else
+                {
+                    Pause();
+                }
             }
+
+            if (Time.timeScale == 1)
+            {
+                player.cameraCanMove = true;
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = false;
+            }
+            else
+            {
+                player.cameraCanMove = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            
         }
 
-        public void OnClick()
+        private void Pause()
         {
-            Time.timeScale = 1;
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0f;
+            _isPaused = true;
+        }
+
+        private void Resume()
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+            _isPaused = false;
         }
     }
 }
