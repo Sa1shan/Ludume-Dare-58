@@ -6,6 +6,7 @@ namespace Source.TextUI
 {
     public class DialogSystem : MonoBehaviour
     {
+        public string[] texts;
         [Header("Привязки к TextMeshProUGUI")]
         [SerializeField] private TextMeshProUGUI tmp1;       // Для обычных текстов
         [SerializeField] private TextMeshProUGUI nameTmp1;   // Для имен
