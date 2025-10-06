@@ -120,86 +120,71 @@ public class RoomInteractionManager : MonoBehaviour
     }
 
     private void HandlePointer()
-{
-    pointerData.position = Input.mousePosition;
-
-    // 1. Проверка выхода за пределы экрана
-    if (pointerData.position.x < 0 || pointerData.position.y < 0 ||
-        pointerData.position.x > Screen.width || pointerData.position.y > Screen.height)
     {
-        if (currentHovered != null)
+        pointerData.position = Input.mousePosition;
+
+        // block by UI?
+        if (blockWhenPointerOverUI && IsPointerOverUI(pointerData))
         {
-            var pdExit = CreatePointerEventData();
-            ExecuteEvents.Execute(currentHovered, pdExit, ExecuteEvents.pointerExitHandler);
-            currentHovered = null;
-        }
-        return;
-    }
-
-    // 2. Блокировка под UI
-    if (blockWhenPointerOverUI && IsPointerOverUI(pointerData))
-    {
-        if (currentHovered != null)
-        {
-            var pdExit = CreatePointerEventData();
-            ExecuteEvents.Execute(currentHovered, pdExit, ExecuteEvents.pointerExitHandler);
-            currentHovered = null;
-        }
-        return;
-    }
-
-    // 3. Создаём 3D-луч от камеры в направлении курсора
-    Ray ray = raycastCamera.ScreenPointToRay(pointerData.position);
-    RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, interactableMask);
-
-    GameObject top = PickTopMostInteractableFrom3DHits(hits);
-
-    // 4. Смена наведённого объекта
-    if (top != currentHovered)
-    {
-        if (currentHovered != null)
-        {
-            var pdExit = CreatePointerEventData();
-            ExecuteEvents.Execute(currentHovered, pdExit, ExecuteEvents.pointerExitHandler);
+            if (currentHovered != null)
+            {
+                var pd = CreatePointerEventData();
+                ExecuteEvents.Execute(currentHovered, pd, ExecuteEvents.pointerExitHandler);
+                currentHovered = null;
+            }
+            return;
         }
 
-        if (top != null)
+        // get world point on the desired Z plane
+        Vector2 worldPoint = ScreenToWorldPointAtZ(pointerData.position, worldPlaneZ);
+
+        Collider2D[] hits = Physics2D.OverlapPointAll(worldPoint, interactableMask);
+
+        // Select immediate candidate (for clicking) and candidate for hover (stabilized)
+        GameObject immediateTop = PickTopMostInteractableFrom2DHits(hits);
+        GameObject stableTop = GetStabilizedCandidate(immediateTop);
+
+        // handle hover change (using stableTop)
+        if (stableTop != currentHovered)
         {
-            var pdEnter = CreatePointerEventData();
-            ExecuteEvents.Execute(top, pdEnter, ExecuteEvents.pointerEnterHandler);
+            if (currentHovered != null)
+            {
+                var pdExit = CreatePointerEventData();
+                ExecuteEvents.Execute(currentHovered, pdExit, ExecuteEvents.pointerExitHandler);
+            }
+
+            if (stableTop != null)
+            {
+                var pdEnter = CreatePointerEventData();
+                ExecuteEvents.Execute(stableTop, pdEnter, ExecuteEvents.pointerEnterHandler);
+            }
+
+            currentHovered = stableTop;
         }
 
-        currentHovered = top;
+        // Click handling: use immediateTop so clicks are responsive
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (immediateTop != null)
+            {
+                var pdClick = CreatePointerEventData();
+                pdClick.button = PointerEventData.InputButton.Left;
+                ExecuteEvents.Execute(immediateTop, pdClick, ExecuteEvents.pointerClickHandler);
+
+                if (debugMode) Debug.Log($"[RIM] Click executed on {immediateTop.name}");
+            }
+            else
+            {
+                if (debugMode) Debug.Log("[RIM] Click on empty space");
+            }
+        }
+
+        if (debugMode && drawGizmos)
+        {
+            // small debug log
+            Debug.Log($"[RIM] mouse={pointerData.position} world={worldPoint} hits={hits.Length} immediateTop={(immediateTop? immediateTop.name : "null")} stableTop={(stableTop? stableTop.name : "null")} currentHovered={(currentHovered? currentHovered.name : "null")}");
+        }
     }
-
-    // 5. Клик
-    if (Input.GetMouseButtonDown(0) && currentHovered != null)
-    {
-        var pdClick = CreatePointerEventData();
-        pdClick.button = PointerEventData.InputButton.Left;
-        ExecuteEvents.Execute(currentHovered, pdClick, ExecuteEvents.pointerClickHandler);
-    }
-}
-
-private GameObject PickTopMostInteractableFrom3DHits(RaycastHit[] hits)
-{
-    if (hits == null || hits.Length == 0)
-        return null;
-
-    // Сортируем по расстоянию (ближайший первым)
-    System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
-
-    foreach (var h in hits)
-    {
-        if (h.collider == null) continue;
-        var inter = h.collider.GetComponentInParent<Interactable2D>();
-        if (inter != null)
-            return inter.gameObject;
-    }
-
-    return null;
-}
-
 
     private PointerEventData CreatePointerEventData()
     {
