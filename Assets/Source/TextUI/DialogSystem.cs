@@ -1,41 +1,30 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
 
 namespace Source.TextUI
 {
+    [System.Serializable]
+    public class DialogLine
+    {
+        public string name;                         // Имя персонажа
+        [TextArea(5, 15)] public string text;       // Текст диалога
+    }
+
     public class DialogSystem : MonoBehaviour
     {
-        public string[] texts;
         [Header("Привязки к TextMeshProUGUI")]
-        [SerializeField] private TextMeshProUGUI tmp1;       // Для обычных текстов
-        [SerializeField] private TextMeshProUGUI nameTmp1;   // Для имен
+        [SerializeField] private TextMeshProUGUI tmp1;      // Для обычных текстов
+        [SerializeField] private TextMeshProUGUI nameTmp1;  // Для имен
 
-        [Header("Имена")]
-        [SerializeField] private string name1;
-        [SerializeField] private string name2;
-        [SerializeField] private string name3;
-        [SerializeField] private string name4;
-        [SerializeField] private string name5;
-        [SerializeField] private string name6;
-        [SerializeField] private string name7;
-        [SerializeField] private string name8;
-        [SerializeField] private string name9;
-        [SerializeField] private string name10;
-        
-        [Header("Обычные строки")]
-        [SerializeField] [TextArea(5, 15)] private string string1;
-        [SerializeField] [TextArea(5, 15)] private string string2;
-        [SerializeField] [TextArea(5, 15)] private string string3;
-        [SerializeField] [TextArea(5, 15)] private string string4;
-        [SerializeField] [TextArea(5, 15)] private string string5;
-        [SerializeField] [TextArea(5, 15)] private string string6;
-        [SerializeField] [TextArea(5, 15)] private string string7;
-        [SerializeField] [TextArea(5, 15)] private string string8;
-        [SerializeField] [TextArea(5, 15)] private string string9;
-        [SerializeField] [TextArea(5, 15)] private string string10;
-        
-        private int currentIndex = 1;      // текущая пара
+        [Header("Настройки анимации")]
+        [SerializeField] private float animationSpeed = 0.05f; // Задержка между буквами
+
+        [Header("Диалоги")]
+        [SerializeField] private List<DialogLine> dialogLines = new List<DialogLine>();
+
+        private int currentIndex = 0;      // текущий индекс пары
         private bool isAnimating = false;  // блокировка ЛКМ
 
         private void Start()
@@ -54,93 +43,58 @@ namespace Source.TextUI
 
         private void ShowNextPair()
         {
-            string text = GetString(currentIndex);
-            string name = GetName(currentIndex);
-
-            if (!string.IsNullOrEmpty(text) || !string.IsNullOrEmpty(name))
+            if (currentIndex >= dialogLines.Count)
             {
-                AnimatePair(tmp1, text, nameTmp1, name);
-                currentIndex++;
+                OnDialogEnd();
+                return;
             }
+
+            DialogLine line = dialogLines[currentIndex];
+
+            // имя сразу появляется целиком
+            nameTmp1.text = line.name;
+
+            // текст печатается по буквам
+            AnimateText(tmp1, line.text);
+            currentIndex++;
         }
 
-        private void AnimatePair(TextMeshProUGUI textTMP, string text, TextMeshProUGUI nameTMP, string name)
+        private void AnimateText(TextMeshProUGUI textTMP, string text)
         {
-            if (textTMP == null || nameTMP == null) return;
+            if (textTMP == null) return;
 
             isAnimating = true;
-
             textTMP.text = "";
-            nameTMP.text = "";
 
-            string[] textWords = text.Split(' ');
-            string[] nameWords = name.Split(' ');
-
-            float interval = 0.3f;
             float delay = 0f;
 
-            int maxWords = Mathf.Max(textWords.Length, nameWords.Length);
-
-            for (int i = 0; i < maxWords; i++)
+            for (int i = 0; i < text.Length; i++)
             {
-                int textIndex = i;
-                int nameIndex = i;
+                char c = text[i];
+
                 DOVirtual.DelayedCall(delay, () =>
                 {
-                    if (textIndex < textWords.Length)
-                    {
-                        textTMP.text += (textTMP.text.Length > 0 ? " " : "") + textWords[textIndex];
-                    }
-                    if (nameIndex < nameWords.Length)
-                    {
-                        nameTMP.text += (nameTMP.text.Length > 0 ? " " : "") + nameWords[nameIndex];
-                    }
+                    textTMP.text += c;
                 });
 
-                delay += interval;
+                // задержка только если символ не пробел
+                if (c != ' ')
+                {
+                    delay += animationSpeed;
+                }
             }
 
-            // После окончания анимации пары разрешаем ЛКМ для следующей
+            // После окончания анимации разрешаем ЛКМ
             DOVirtual.DelayedCall(delay, () =>
             {
                 isAnimating = false;
             });
         }
 
-        private string GetString(int index)
-        {
-            switch (index)
-            {
-                case 1: return string1;
-                case 2: return string2;
-                case 3: return string3;
-                case 4: return string4;
-                case 5: return string5;
-                case 6: return string6;
-                case 7: return string7;
-                case 8: return string8;
-                case 9: return string9;
-                case 10: return string10;
-                default: return "";
-            }
-        }
 
-        private string GetName(int index)
+        private void OnDialogEnd()
         {
-            switch (index)
-            {
-                case 1: return name1;
-                case 2: return name2;
-                case 3: return name3;
-                case 4: return name4;
-                case 5: return name5;
-                case 6: return name6;
-                case 7: return name7;
-                case 8: return name8;
-                case 9: return name9;
-                case 10: return name10;
-                default: return "";
-            }
+            // 🔹 Здесь ты сам реализуешь, что должно произойти после последнего диалога.
         }
     }
 }
