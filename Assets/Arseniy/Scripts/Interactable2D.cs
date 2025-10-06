@@ -1,62 +1,66 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Events;
+
 
 [RequireComponent(typeof(Collider2D))]
-public class Interactable2D : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+public class Interactable2D : MonoBehaviour
 {
-    [Header("Visual")]
-    [Tooltip("Child GameObject with white sprite used as outline/highlight (SetActive true/false)")]
-    [SerializeField] private GameObject outline;
+    [Header("Outline (assign a child SpriteRenderer that's a white sprite)")]
+    public SpriteRenderer outlineRenderer; // assign: child white sprite used as outline
+    public Vector3 outlineScale = Vector3.one;
+    public bool outlineEnableOnHover = true;
 
-    [Header("State machine (optional - will be added automatically if absent)")]
-    [SerializeField] private InteractableStateMachine stateMachine;
+
+    [Header("Events")]
+    public UnityEvent onClick;
+    public UnityEvent onHoverEnter;
+    public UnityEvent onHoverExit;
+
+
+    [HideInInspector]
+    public bool IsHovered { get; private set; }
+
 
     void Reset()
     {
-        var t = transform.Find("Outline");
-        if (t != null) outline = t.gameObject;
-
-        stateMachine = GetComponent<InteractableStateMachine>();
-        if (stateMachine == null) stateMachine = gameObject.AddComponent<InteractableStateMachine>();
-    }
-
-    void Awake()
-    {
-        if (outline) outline.SetActive(false);
-        if (stateMachine == null) stateMachine = GetComponent<InteractableStateMachine>();
-    }
-
-    void OnEnable()
-    {
-        if (outline) outline.SetActive(false);
-        if (stateMachine == null) stateMachine = GetComponent<InteractableStateMachine>();
-    }
-
-#if UNITY_EDITOR
-    void OnValidate()
-    {
-        // in editor, keep outline off by default to avoid confusion
-        if (outline != null && !Application.isPlaying)
+// попытка автоматически найти возможный дочерний SpriteRenderer (не гарантированно)
+        if (outlineRenderer == null)
         {
-            outline.SetActive(false);
+            var sr = GetComponentInChildren<SpriteRenderer>(true);
+            if (sr != null && sr != GetComponent<SpriteRenderer>())
+                outlineRenderer = sr;
         }
     }
-#endif
 
-    public void OnPointerEnter(PointerEventData eventData)
+
+// Вызывается InteractionManager при наведении
+    public void OnHoverEnter()
     {
-        if (outline) outline.SetActive(true);
-        stateMachine?.NotifyPointerEnter(eventData);
+        if (IsHovered) return;
+        IsHovered = true;
+        if (outlineRenderer != null && outlineEnableOnHover)
+        {
+            outlineRenderer.gameObject.SetActive(true);
+            outlineRenderer.transform.localScale = outlineScale;
+        }
+        onHoverEnter?.Invoke();
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+
+// Вызывается InteractionManager при уходе курсора
+    public void OnHoverExit()
     {
-        if (outline) outline.SetActive(false);
-        stateMachine?.NotifyPointerExit(eventData);
+        if (!IsHovered) return;
+        IsHovered = false;
+        if (outlineRenderer != null && outlineEnableOnHover)
+            outlineRenderer.gameObject.SetActive(false);
+        onHoverExit?.Invoke();
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+
+// Вызывается InteractionManager при клике
+    public void OnClick()
     {
-        stateMachine?.NotifyPointerClick(eventData);
+        onClick?.Invoke();
     }
 }
