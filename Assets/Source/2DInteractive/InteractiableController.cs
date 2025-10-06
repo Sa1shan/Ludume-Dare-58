@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.Playables;
 
 namespace Source._2DInteractive
 {
@@ -9,15 +10,18 @@ namespace Source._2DInteractive
     {
         [Header("Player")]
         [SerializeField] private GameObject player;
-        
+
         [Header("Interactiable")]
         [SerializeField] private Image blackbackground;
         [SerializeField] private List<Button> buttons = new List<Button>();
-        
+
         [Header("Float")]
         [SerializeField] private float delay;   
         [SerializeField] private float fadeDuration;
-        
+
+        [Header("Timeline")]
+        [SerializeField] private PlayableDirector timeline;
+
         private bool _iskeypressed = false;
         private Rigidbody _playerRb;
 
@@ -25,12 +29,13 @@ namespace Source._2DInteractive
         {
             _playerRb = player.GetComponent<Rigidbody>();
             blackbackground.gameObject.SetActive(false);
+
             // Устанавливаем прозрачность фона
             Color bgColor = blackbackground.color;
             bgColor.a = 1f;
             blackbackground.color = bgColor;
 
-            // Проходим по каждой кнопке
+            // Прячем кнопки
             foreach (Button button in buttons)
             {
                 if (button != null)
@@ -45,36 +50,66 @@ namespace Source._2DInteractive
                     }
                 }
             }
-        }
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.E))
+
+            // Подписка на событие завершения Timeline
+            if (timeline != null)
             {
-                _iskeypressed = true;
-                blackbackground.gameObject.SetActive(true);
-                
-                _playerRb.constraints = RigidbodyConstraints.FreezeAll;
-                
-                foreach (Button button in buttons)
-                {
-                    button.gameObject.SetActive(true);
-                }
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                
-                // Задержка перед анимацией в 1 секунду
-                DOVirtual.DelayedCall(delay, () =>
-                {
-                    // После задержки запускаем анимацию альфа-канала
-                    blackbackground.DOFade(0f, fadeDuration).OnComplete(() =>
-                    {
-                        foreach (var button in buttons)
-                        {
-                            button.image.DOFade(1f, fadeDuration).OnComplete(() => Time.timeScale = 0f);
-                        }
-                    });
-                });
+                timeline.stopped += OnTimelineFinished;
             }
         }
+
+        private void OnDisable()
+        {
+            if (timeline != null)
+            {
+                timeline.stopped -= OnTimelineFinished;
+            }
+        }
+
+        private void OnTimelineFinished(PlayableDirector director)
+        {
+            // Вызываем ту же логику, что раньше запускалась по E
+            StartInteraction();
+        }
+
+        private void StartInteraction()
+        {
+            if (_iskeypressed) return; // Чтобы случайно не запускать дважды
+            _iskeypressed = true;
+
+            blackbackground.gameObject.SetActive(true);
+            _playerRb.constraints = RigidbodyConstraints.FreezeAll;
+
+            foreach (Button button in buttons)
+            {
+                button.gameObject.SetActive(true);
+            }
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            DOVirtual.DelayedCall(delay, () =>
+            {
+                blackbackground.DOFade(0f, fadeDuration).OnComplete(() =>
+                {
+                    foreach (var button in buttons)
+                    {
+                        button.image.DOFade(1f, fadeDuration).OnComplete(() =>
+                        {
+                            Time.timeScale = 0f;
+                        });
+                    }
+                });
+            });
+        }
+
+        // Можно оставить Update() для отладки или временно убрать
+        // private void Update()
+        // {
+        //     if (Input.GetKeyDown(KeyCode.E))
+        //     {
+        //         StartInteraction();
+        //     }
+        // }
     }
 }
