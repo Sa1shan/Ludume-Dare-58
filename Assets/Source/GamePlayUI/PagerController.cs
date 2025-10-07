@@ -8,6 +8,9 @@ namespace Source.GamePlayUI
 {
     public class PagerController : MonoBehaviour
     { 
+        [Header("Player")]
+        [SerializeField] private GameObject player;
+        
         [Header("Pager и текст")]
         [SerializeField] private RectTransform pager;
         [SerializeField] private TextMeshProUGUI tmPro;
@@ -27,8 +30,11 @@ namespace Source.GamePlayUI
         [SerializeField] private float pagerAnimationDuration;
         [SerializeField] private float pagerAnimationDelay;
 
-        private int currentPageIndex = 0;
-        private bool isAnimatingText = false;
+        private int _currentPageIndex = 0;
+        private bool _isAnimatingText = false;
+        private int _currentIndex = 0;
+        private Vector3 _playerStartPosition;
+
 
         void Start()
         {
@@ -40,6 +46,7 @@ namespace Source.GamePlayUI
             {
                 tmPro.text = pages[0];
             }
+            _playerStartPosition = player.transform.position;
         }
 
         void Update()
@@ -57,12 +64,24 @@ namespace Source.GamePlayUI
                 {
                     // Скрываем Pager
                     AnimatePager(false); // false — возврат
+                    // В будущем здесь будет вызов метода перехода к следующему сообщению:
+                    // NextMessage();
                 }
+                notificationTmPro.gameObject.SetActive(false);
             }
 
             if (Input.GetKeyDown(KeyCode.N))
             {
                 Notificaion();
+            }
+            notificationTmPro.text = notification;
+        }
+
+        private void PlayerMoving()
+        {
+            if (player.transform.position != _playerStartPosition)
+            {
+                AnimatePager(false);
             }
         }
 
@@ -88,7 +107,7 @@ namespace Source.GamePlayUI
                     else
                     {
                         // Анимация текста только когда Pager на конечной позиции
-                        ShowMessage(currentPageIndex);
+                        ShowMessage(_currentPageIndex);
                     }
                 });
         }
@@ -104,7 +123,7 @@ namespace Source.GamePlayUI
         {
             if (textTMP == null) return;
 
-            isAnimatingText = true;
+            _isAnimatingText = true;
             textTMP.text = "";
 
             float delay = pagerAnimationDelay; // используем тот же delay для текста
@@ -124,7 +143,7 @@ namespace Source.GamePlayUI
                 }
             }
 
-            DOVirtual.DelayedCall(delay, () => { isAnimatingText = false; });
+            DOVirtual.DelayedCall(delay, () => { _isAnimatingText = false; });
         }
 
         private void Notificaion()
@@ -135,7 +154,31 @@ namespace Source.GamePlayUI
 
         private void NextMessage()
         {
-            // Здесь позже добавишь логику для перехода к следующему сообщению
+            // 🔹 Логика для перехода к следующему уведомлению
+
+            // 1️⃣ Проверяем, есть ли ещё страницы (уведомления) после текущей
+            // Если следующая страница есть — увеличиваем индекс
+            if (_currentPageIndex < pages.Count - 1)
+            {
+                _currentPageIndex++;
+
+                // 2️⃣ Очищаем текст перед новой анимацией
+                tmPro.text = "";
+
+                // 3️⃣ Запускаем анимацию текста для следующей страницы
+                ShowMessage(_currentPageIndex);
+            }
+            else
+            {
+                // 4️⃣ Если уведомления закончились — можно спрятать панель
+                // или сбросить индекс для повторного показа
+                // pager.gameObject.SetActive(false);
+
+                // currentPageIndex = 0; // если хочешь, чтобы цикл начинался заново
+
+                // 🔸 Здесь ты потом добавишь свой триггер, когда все уведомления пройдены
+                // Например, можно вызвать событие или метод из GameManager
+            }
         }
     }
 }

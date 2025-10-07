@@ -5,11 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2d0c9aa-d265-45e7-8855-8d986c6cee80" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Ludume-Dare-58/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Ludume-Dare-58/.idea/projectSettingsUpdater.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Ludume-Dare-58/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Ludume-Dare-58/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Source/TextUI.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Source/TextUI/DialogSystem.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Source/TextUI/DialogSystem.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Presentation/Pager/PagerFont/Greybeard-11px SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Presentation/Pager/PagerFont/Greybeard-11px SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Source/GamePlayUI/PagerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Source/GamePlayUI/PagerController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Support/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Support/Scenes/Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Support/Scenes/Start.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Support/Scenes/Start.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +67,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\Unity\6000.0.57f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.57f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\griga\Documents\GitHub\Ludume-Dare-58 -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\griga\Documents\GitHub\Ludume-Dare-58" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -74,7 +75,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="D:\Unity\6000.0.57f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.57f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\griga\Documents\GitHub\Ludume-Dare-58 -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\griga\Documents\GitHub\Ludume-Dare-58" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -86,6 +87,9 @@
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="projectPathOnTarget" />
+      <option name="runtimes">
+        <list />
+      </option>
       <option name="selectedOptions">
         <list />
       </option>
@@ -96,6 +100,9 @@
       <option name="listenPortForConnections" value="false" />
       <option name="pid" />
       <option name="projectPathOnTarget" />
+      <option name="runtimes">
+        <list />
+      </option>
       <option name="selectedOptions">
         <list />
       </option>
@@ -119,7 +126,11 @@
       <workItem from="1759759127692" duration="13901000" />
       <workItem from="1759780304499" duration="3053000" />
       <workItem from="1759793714532" duration="4354000" />
+<<<<<<< Updated upstream
       <workItem from="1759836861068" duration="2271000" />
+=======
+      <workItem from="1759833842447" duration="2341000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>
