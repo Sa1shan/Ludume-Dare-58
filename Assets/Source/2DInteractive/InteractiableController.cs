@@ -11,34 +11,32 @@ namespace Source._2DInteractive
     {
         [Header("Player")]
         [SerializeField] private GameObject player;
-
+        
         [Header("Interactiable")]
-        [SerializeField] private Image blackbackground;
+        [SerializeField] private Image blackBackground;
         [SerializeField] private List<Button> buttons = new List<Button>();
+        [SerializeField] private Image background;
 
         [Header("Float")]
         [SerializeField] private float delay;   
         [SerializeField] private float fadeDuration;
-
-        [FormerlySerializedAs("cutScene_1")]
-        [FormerlySerializedAs("timeline")]
-        [Header("Timelines")]
-        [SerializeField] private PlayableDirector cutScene1;
-        [SerializeField] private PlayableDirector cutScene2;
-        [SerializeField] private PlayableDirector cutScene3;
-        [SerializeField] private PlayableDirector cutScene4;
+        
+        [Header("Timeline")]
+        [SerializeField] private PlayableDirector cutScene;
+        
         private bool _iskeypressed = false;
         private Rigidbody _playerRb;
 
         private void Start()
         {
             _playerRb = player.GetComponent<Rigidbody>();
-            blackbackground.gameObject.SetActive(false);
+            blackBackground.gameObject.SetActive(false);
+            background.gameObject.SetActive(false);
 
             // Устанавливаем прозрачность фона
-            Color bgColor = blackbackground.color;
+            Color bgColor = blackBackground.color;
             bgColor.a = 1f;
-            blackbackground.color = bgColor;
+            blackBackground.color = bgColor;
 
             // Прячем кнопки
             foreach (Button button in buttons)
@@ -46,29 +44,18 @@ namespace Source._2DInteractive
                 if (button != null)
                 {
                     button.gameObject.SetActive(false);
-                    Image btnImage = button.GetComponent<Image>();
-                    if (btnImage != null)
-                    {
-                        Color btnColor = btnImage.color;
-                        btnColor.a = 0f;
-                        btnImage.color = btnColor;
-                    }
                 }
             }
 
             // Подписка на событие завершения Timeline
-            
-                cutScene1.stopped += OnCutSceneFinished;
-                cutScene2.stopped += OnCutSceneFinished;
-                cutScene3.stopped += OnCutSceneFinished;
-                cutScene4.stopped += OnCutSceneFinished;
+                cutScene.stopped += OnCutSceneFinished;
         }
 
         private void OnDisable()
         {
-            if (cutScene1 != null)
+            if (cutScene != null)
             {
-                cutScene1.stopped -= OnCutSceneFinished;
+                cutScene.stopped -= OnCutSceneFinished;
             }
         }
 
@@ -83,7 +70,8 @@ namespace Source._2DInteractive
             if (_iskeypressed) return; // Чтобы случайно не запускать дважды
             _iskeypressed = true;
 
-            blackbackground.gameObject.SetActive(true);
+            blackBackground.gameObject.SetActive(true);
+            background.gameObject.SetActive(true);
             _playerRb.constraints = RigidbodyConstraints.FreezeAll;
 
             foreach (Button button in buttons)
@@ -96,26 +84,12 @@ namespace Source._2DInteractive
 
             DOVirtual.DelayedCall(delay, () =>
             {
-                blackbackground.DOFade(0f, fadeDuration).OnComplete(() =>
+                blackBackground.DOFade(0f, fadeDuration).OnComplete(() =>
                 {
-                    foreach (var button in buttons)
-                    {
-                        button.image.DOFade(1f, fadeDuration).OnComplete(() =>
-                        {
-                            Time.timeScale = 0f;
-                        });
-                    }
+                    blackBackground.gameObject.SetActive(false);
+                    Time.timeScale = 0f;
                 });
             });
         }
-
-        // Можно оставить Update() для отладки или временно убрать
-        // private void Update()
-        // {
-        //     if (Input.GetKeyDown(KeyCode.E))
-        //     {
-        //         StartInteraction();
-        //     }
-        // }
     }
 }
