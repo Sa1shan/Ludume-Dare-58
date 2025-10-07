@@ -6,10 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="a2d0c9aa-d265-45e7-8855-8d986c6cee80" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Ludume-Dare-58/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Ludume-Dare-58/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Source/TextUI/DialogSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Source/TextUI/DialogSystem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Source/TextUI.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Source/TextUI/DialogSystem.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Source/TextUI/DialogSystem.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Support/Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Support/Scenes/Main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Support/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Support/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.probuilder/Settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/Packages/com.unity.probuilder/Settings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +22,7 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Assets/Source/2DInteractive/Exit2DMode.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Source/2DInteractive/InteractiableController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Source/GamePlayUI/PagerController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Source/MiniGame/Puzzel/PuzzelMoveController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Source/StartUI/Quit.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Source/StartUI/StartAndPause.cs" root0="FORCE_HIGHLIGHTING" />
@@ -110,6 +111,7 @@
       <workItem from="1759746204772" duration="1855000" />
       <workItem from="1759759127692" duration="13901000" />
       <workItem from="1759780304499" duration="3053000" />
+      <workItem from="1759793714532" duration="4354000" />
     </task>
     <servers />
   </component>

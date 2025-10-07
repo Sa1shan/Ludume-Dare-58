@@ -1,9 +1,9 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using DG.Tweening;
 
-namespace Source.TextUI
+namespace Source.GamePlayUI
 {
     [System.Serializable]
     public class DialogLine
