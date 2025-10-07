@@ -34,11 +34,6 @@
 # Visual Studio cache directory
 .vs/
 
-# Rider / JetBrains
-.idea/
-*.sln.iml
-*.iml
-
 # Gradle cache directory
 .gradle/
 
