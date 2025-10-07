@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 
 namespace Source._2DInteractive
 {
@@ -19,9 +20,13 @@ namespace Source._2DInteractive
         [SerializeField] private float delay;   
         [SerializeField] private float fadeDuration;
 
-        [Header("Timeline")]
-        [SerializeField] private PlayableDirector timeline;
-
+        [FormerlySerializedAs("cutScene_1")]
+        [FormerlySerializedAs("timeline")]
+        [Header("Timelines")]
+        [SerializeField] private PlayableDirector cutScene1;
+        [SerializeField] private PlayableDirector cutScene2;
+        [SerializeField] private PlayableDirector cutScene3;
+        [SerializeField] private PlayableDirector cutScene4;
         private bool _iskeypressed = false;
         private Rigidbody _playerRb;
 
@@ -52,21 +57,22 @@ namespace Source._2DInteractive
             }
 
             // Подписка на событие завершения Timeline
-            if (timeline != null)
-            {
-                timeline.stopped += OnTimelineFinished;
-            }
+            
+                cutScene1.stopped += OnCutSceneFinished;
+                cutScene2.stopped += OnCutSceneFinished;
+                cutScene3.stopped += OnCutSceneFinished;
+                cutScene4.stopped += OnCutSceneFinished;
         }
 
         private void OnDisable()
         {
-            if (timeline != null)
+            if (cutScene1 != null)
             {
-                timeline.stopped -= OnTimelineFinished;
+                cutScene1.stopped -= OnCutSceneFinished;
             }
         }
 
-        private void OnTimelineFinished(PlayableDirector director)
+        private void OnCutSceneFinished(PlayableDirector director)
         {
             // Вызываем ту же логику, что раньше запускалась по E
             StartInteraction();
