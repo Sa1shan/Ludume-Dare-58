@@ -1,15 +1,18 @@
+using Source._2DInteractive;
 using UnityEngine;
 using Unity.Cinemachine;
+using UnityEngine.Serialization;
 
 [AddComponentMenu("Interaction/Door Interactor (Data)")]
 public class DoorInteractor : MonoBehaviour
 {
     [Header("References (per-door)")]
     [Tooltip("UI панель не хранится здесь — она общая у DoorRaycaster (sharedPromptPanel).")]
-    [SerializeField] private GameObject targetObject;
+    public GameObject openCutscene;
+    public GameObject closeCutScene;
 
     [Tooltip("Cinemachine virtual camera (optional) — будет обнулён priority при открытии.")]
-    [SerializeField] private CinemachineCamera cinemachineCam;
+    public CinemachineCamera cinemachineCam;
 
     // состояние
     private bool doorOpened = false;
@@ -17,14 +20,16 @@ public class DoorInteractor : MonoBehaviour
     // Публичный геттер, чтобы менеджер знал, можно ли взаимодействовать
     public bool IsOpened => doorOpened;
 
+    [SerializeField] private InteractiableController interactiableController;
     // Публичный метод открытия — вызывается менеджером (DoorRaycaster)
     public void OpenDoor()
     {
         if (doorOpened) return;
         doorOpened = true;
+        interactiableController.playerRb.isKinematic = true;
 
-        if (targetObject != null)
-            targetObject.SetActive(true);
+        if (openCutscene != null)
+            openCutscene.SetActive(true);
         else
             Debug.LogWarning($"[DoorInteractor] targetObject не назначен у двери '{gameObject.name}'");
 

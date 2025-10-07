@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Playables;
-using UnityEngine.Serialization;
 
 namespace Source._2DInteractive
 {
@@ -23,13 +22,14 @@ namespace Source._2DInteractive
         
         [Header("Timeline")]
         [SerializeField] private PlayableDirector cutScene;
+        public PlayableDirector closeCutscene;
         
         private bool _iskeypressed = false;
-        private Rigidbody _playerRb;
-
+        [HideInInspector] public Rigidbody playerRb;
+        
         private void Start()
         {
-            _playerRb = player.GetComponent<Rigidbody>();
+            playerRb = player.GetComponent<Rigidbody>();
             blackBackground.gameObject.SetActive(false);
             background.gameObject.SetActive(false);
 
@@ -46,6 +46,7 @@ namespace Source._2DInteractive
                     button.gameObject.SetActive(false);
                 }
             }
+            
 
             // Подписка на событие завершения Timeline
                 cutScene.stopped += OnCutSceneFinished;
@@ -72,7 +73,6 @@ namespace Source._2DInteractive
 
             blackBackground.gameObject.SetActive(true);
             background.gameObject.SetActive(true);
-            _playerRb.constraints = RigidbodyConstraints.FreezeAll;
 
             foreach (Button button in buttons)
             {

@@ -1312,15 +1312,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 440325364}
-  blackbackground: {fileID: 1253367911}
+  blackBackground: {fileID: 0}
   buttons:
   - {fileID: 581069785}
   - {fileID: 2127197117}
   - {fileID: 1350209764}
   - {fileID: 949124910}
+  background: {fileID: 0}
   delay: 0.3
   fadeDuration: 2
-  timeline: {fileID: 0}
+  cutScene: {fileID: 0}
+  closeCutscene: {fileID: 0}
+  playerRb: {fileID: 0}
 --- !u!4 &482349347
 Transform:
   m_ObjectHideFlags: 0
@@ -2804,6 +2807,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2a8776bcb8d8345baa90e91cb1e7cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorInteractor: {fileID: 0}
+  interactiableController: {fileID: 0}
 --- !u!114 &949124912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2876,7 +2881,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1008969126
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4935,7 +4940,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1755126032
 RectTransform:
   m_ObjectHideFlags: 0

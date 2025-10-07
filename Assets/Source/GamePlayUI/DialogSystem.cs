@@ -24,6 +24,12 @@ namespace Source.GamePlayUI
         [Header("Диалоги")]
         [SerializeField] private List<DialogLine> dialogLines = new List<DialogLine>();
 
+        [SerializeField] private GameObject dialogue;
+
+        [SerializeField] private GameObject exitButton;
+        
+        private bool _firstLineShown = false;
+
         private int currentIndex = 0;      // текущий индекс пары
         private bool isAnimating = false;  // блокировка ЛКМ
 
@@ -35,13 +41,28 @@ namespace Source.GamePlayUI
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0) && !isAnimating)
+            if (dialogue.gameObject.activeSelf)
             {
-                ShowNextPair();
+                // Показываем первый элемент один раз, когда объект активен
+                if (!_firstLineShown)
+                {
+                    if (dialogLines.Count > 0)
+                    {
+                        ShowNextPair(auto: true);
+                        _firstLineShown = true;
+                    }
+                }
+
+                // Все последующие строки по ЛКМ
+                if (Input.GetMouseButtonDown(0) && !isAnimating && _firstLineShown)
+                {
+                    ShowNextPair();
+                }
             }
         }
 
-        private void ShowNextPair()
+// Немного изменяем ShowNextPair
+        private void ShowNextPair(bool auto = false)
         {
             if (currentIndex >= dialogLines.Count)
             {
@@ -51,12 +72,17 @@ namespace Source.GamePlayUI
 
             DialogLine line = dialogLines[currentIndex];
 
-            // имя сразу появляется целиком
             nameTmp1.text = line.name;
-
-            // текст печатается по буквам
             AnimateText(tmp1, line.text);
-            currentIndex++;
+
+            if (!auto)
+            {
+                currentIndex++;
+            }
+            else
+            {
+                currentIndex = 1; // первый элемент уже показан
+            }
         }
 
         private void AnimateText(TextMeshProUGUI textTMP, string text)
@@ -94,7 +120,8 @@ namespace Source.GamePlayUI
 
         private void OnDialogEnd()
         {
-            // 🔹 Здесь ты сам реализуешь, что должно произойти после последнего диалога.
+            dialogue.gameObject.SetActive(false);
+            exitButton.gameObject.SetActive(true);
         }
     }
 }
