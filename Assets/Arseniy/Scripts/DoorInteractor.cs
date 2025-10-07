@@ -1,43 +1,34 @@
 using UnityEngine;
-using Unity.Cinemachine; // если у вас другая версия пакета, замените на нужный namespace
+using Unity.Cinemachine;
 
 [AddComponentMenu("Interaction/Door Interactor")]
 public class DoorInteractor : MonoBehaviour
 {
-    [Header("Raycast / interaction")]
-    [Tooltip("Камера, из которой идёт луч. Если пусто — используется Camera.main")]
-    public Camera sourceCamera;
-    [Tooltip("Максимальная дистанция взаимодействия")]
-    public float maxDistance = 2f;
-    [Tooltip("LayerMask для взаимодействия (опционально)")]
-    public LayerMask interactableMask = ~0;
+    [Header("Raycast / Interaction")]
+    [Tooltip("Камера, из которой идёт луч. Если пусто — используется Camera.main.")]
+    [SerializeField] private Camera sourceCamera;
 
-    [Header("Door references")]
-    [Tooltip("Объект двери, с которым связан этот скрипт. Если пусто — будет использован сам GameObject.")]
-    public GameObject doorObject;
+    [Tooltip("Максимальная дистанция взаимодействия.")]
+    [SerializeField] private float maxDistance = 2f;
 
-    [Header("UI")]
-    [Tooltip("Панель с текстом 'Нажмите E' (будет показываться/скрываться)")]
-    public GameObject promptPanel;
+    [Tooltip("Слои, по которым производится проверка Raycast.")]
+    [SerializeField] private LayerMask interactableMask = ~0;
 
-    [Header("Object to Activate (this door's cutscene / target)")]
-    [Tooltip("Объект, который нужно включить при взаимодействии (каждая дверь может иметь свой)")]
-    public GameObject targetObject;
+    [Header("Door Settings")]
+    [Tooltip("Тэг объекта двери (по умолчанию Door).")]
+    [SerializeField] private string doorTag = "Door";
 
-    [Header("Cinemachine (optional)")]
-    [Tooltip("Виртуальная камера Cinemachine, у которой нужно сбросить Priority (опционально)")]
-    public CinemachineCamera cinemachineCam;
+    [Header("References")]
+    [Tooltip("UI панель с текстом 'Нажмите E'.")]
+    [SerializeField] private GameObject promptPanel;
 
-    // внутренние
-    private Collider doorCollider;
-    private bool promptVisible = false;
+    [Tooltip("Объект, который активируется при взаимодействии.")]
+    [SerializeField] private GameObject targetObject;
+
+    [Tooltip("Камера Cinemachine, у которой нужно сбросить приоритет.")]
+    [SerializeField] private CinemachineCamera cinemachineCam;
+
     private bool doorOpened = false;
-
-    void Reset()
-    {
-        // по умолчанию привяжем камеру, если скрипт повесили на объект с камерой
-        sourceCamera = GetComponent<Camera>();
-    }
 
     void Start()
     {
@@ -45,15 +36,8 @@ public class DoorInteractor : MonoBehaviour
         {
             sourceCamera = Camera.main;
             if (sourceCamera == null)
-                Debug.LogWarning("[DoorInteractor] sourceCamera не назначена и Camera.main равна null.");
+                Debug.LogWarning("[DoorInteractor] Камера не назначена и Camera.main не найдена.");
         }
-
-        if (doorObject == null)
-            doorObject = this.gameObject;
-
-        doorCollider = doorObject.GetComponent<Collider>();
-        if (doorCollider == null)
-            Debug.LogWarning($"[DoorInteractor] У объекта двери '{doorObject.name}' нет Collider'а — луч не сможет её распознать.");
 
         if (promptPanel != null)
             promptPanel.SetActive(false);
@@ -61,76 +45,62 @@ public class DoorInteractor : MonoBehaviour
 
     void Update()
     {
-        if (doorOpened) return; // если дверь уже открыта — ничего не делать
+        // если дверь уже открыта — гарантированно выключаем UI и ничего не делаем
+        if (doorOpened)
+        {
+            if (promptPanel != null && promptPanel.activeSelf)
+                promptPanel.SetActive(false);
+            return;
+        }
 
-        if (sourceCamera == null || doorCollider == null) return;
+        if (sourceCamera == null) return;
 
-        Ray ray = sourceCamera.ScreenPointToRay(new Vector2(Screen.width * 0.5f, Screen.height * 0.5f));
+        Ray ray = sourceCamera.ScreenPointToRay(new Vector2(Screen.width / 2f, Screen.height / 2f));
         RaycastHit hit;
 
-        // Если попали в пределах maxDistance по слоям
         if (Physics.Raycast(ray, out hit, maxDistance, interactableMask))
         {
-            // Проверяем, что попали именно в этот объект двери (или в его детей)
-            if (IsHitThisDoor(hit.collider))
+            // Проверяем, есть ли у объекта тег Door
+            if (hit.collider.CompareTag(doorTag))
             {
                 ShowPrompt(true);
 
-                // Нажатие E
+                // Если нажата клавиша E
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     OpenDoor();
                 }
 
-                return; // ранний выход — подсказка показана, не выключаем её ниже
+                return; // выходим, чтобы не скрывать подсказку
             }
         }
 
-        // Если сюда дошли — ничего не попало или это не эта дверь
+        // Если луч не попал в дверь
         ShowPrompt(false);
     }
 
-    bool IsHitThisDoor(Collider hitCollider)
-    {
-        // Попали прямо в тот же Коллайдер
-        if (hitCollider == doorCollider) return true;
-
-        // Либо попали в дочерний объект двери — проверим родителей
-        Transform t = hitCollider.transform;
-        while (t != null)
-        {
-            if (t.gameObject == doorObject) return true;
-            t = t.parent;
-        }
-
-        return false;
-    }
-
-    void ShowPrompt(bool show)
+    private void ShowPrompt(bool show)
     {
         if (promptPanel != null && promptPanel.activeSelf != show)
             promptPanel.SetActive(show);
-
-        promptVisible = show;
     }
 
-    void OpenDoor()
+    private void OpenDoor()
     {
-        // защита от повторных вызовов
         if (doorOpened) return;
         doorOpened = true;
 
-        // скрыть подсказку
+        // Отключаем UI
         if (promptPanel != null)
             promptPanel.SetActive(false);
 
-        // включить целевой объект
+        // Включаем целевой объект
         if (targetObject != null)
             targetObject.SetActive(true);
         else
-            Debug.LogWarning($"[DoorInteractor] targetObject не назначен на двери '{doorObject.name}'.");
+            Debug.LogWarning($"[DoorInteractor] targetObject не назначен у двери {gameObject.name}");
 
-        // сбрасываем вес (priority) виртуальной камеры, если назначена
+        // Сбрасываем приоритет камеры
         if (cinemachineCam != null)
         {
             try
@@ -139,19 +109,21 @@ public class DoorInteractor : MonoBehaviour
             }
             catch (System.Exception e)
             {
-                Debug.LogWarning($"[DoorInteractor] Не удалось изменить Priority у Cinemachine камеры: {e.Message}");
+                Debug.LogWarning($"[DoorInteractor] Ошибка при изменении приоритета камеры: {e.Message}");
             }
         }
     }
 
     void OnDrawGizmosSelected()
     {
-        Camera c = sourceCamera != null ? sourceCamera : Camera.main;
-        if (c == null) return;
+        if (sourceCamera == null)
+            sourceCamera = Camera.main;
 
-        Vector3 origin = c.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, c.nearClipPlane));
-        Vector3 dir = c.transform.forward;
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(origin, dir * maxDistance);
+        if (sourceCamera == null) return;
+
+        Vector3 origin = sourceCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, sourceCamera.nearClipPlane));
+        Vector3 direction = sourceCamera.transform.forward;
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawRay(origin, direction * maxDistance);
     }
 }

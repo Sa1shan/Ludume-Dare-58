@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 181c2cca47b50e948bdf0952a6584f64
+guid: c7f4a8092c49c7a4b88777916b3f81b8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -95,12 +95,34 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: gitara_podsvetka-3_0
+      rect:
+        serializedVersion: 2
+        x: 911
+        y: 618
+        width: 114
+        height: 71
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59ffe50b6aa92da44aba922d853a1725
+      internalID: -207290501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: d31cfe0a143f4874a8737cfa0b5e8a66
     internalID: 0
     vertices: []
     indices: 
@@ -109,7 +131,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      gitara_podsvetka-3_0: -207290501
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
