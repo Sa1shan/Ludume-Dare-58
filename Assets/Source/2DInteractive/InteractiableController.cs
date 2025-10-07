@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Playables;
+using UnityEngine.Serialization;
 
 namespace Source._2DInteractive
 {
@@ -26,6 +27,8 @@ namespace Source._2DInteractive
         
         private bool _iskeypressed = false;
         [HideInInspector] public Rigidbody playerRb;
+
+        [SerializeField] private DoorInteractor doorInteractor;
         
         private void Start()
         {
@@ -62,12 +65,13 @@ namespace Source._2DInteractive
 
         private void OnCutSceneFinished(PlayableDirector director)
         {
-            // Вызываем ту же логику, что раньше запускалась по E
             StartInteraction();
         }
 
         private void StartInteraction()
         {
+            doorInteractor.DoorIndexAddition();
+            
             if (_iskeypressed) return; // Чтобы случайно не запускать дважды
             _iskeypressed = true;
 

@@ -1,9 +1,8 @@
 using Source._2DInteractive;
 using UnityEngine;
 using Unity.Cinemachine;
-using UnityEngine.Serialization;
 
-[AddComponentMenu("Interaction/Door Interactor (Data)")]
+
 public class DoorInteractor : MonoBehaviour
 {
     [Header("References (per-door)")]
@@ -15,6 +14,9 @@ public class DoorInteractor : MonoBehaviour
     public CinemachineCamera cinemachineCam;
     [SerializeField] private InteractiableController interactiableController;
 
+    [SerializeField] private int doorIndex;
+    public int currentDoor = 1;
+    
     // состояние
     private bool doorOpened = false;
 
@@ -22,6 +24,18 @@ public class DoorInteractor : MonoBehaviour
     public bool IsOpened => doorOpened;
 
     // Публичный метод открытия — вызывается менеджером (DoorRaycaster)
+
+    public void DoorIndexAddition()
+    {
+        currentDoor += 1;
+    }
+
+    public bool CanOpen()
+    {
+        if (doorIndex == currentDoor) return true;
+        return false;
+    }
+    
     public void OpenDoor()
     {
         if (doorOpened) return;

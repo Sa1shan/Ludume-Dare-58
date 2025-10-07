@@ -14,6 +14,7 @@ public class DoorRaycaster : MonoBehaviour
     [Tooltip("Общая панель подсказки для всех дверей (пример: 'Нажмите E').")]
     [SerializeField] private GameObject sharedPromptPanel;
 
+    
     // внутренняя ссылка на DoorInteractor текущей в прицеле двери
     private DoorInteractor currentDoorInteractor;
 
@@ -78,10 +79,9 @@ public class DoorRaycaster : MonoBehaviour
         }
 
         // Если нашли DoorInteractor под прицелом и дверь не открыта, показываем панель
-        if (hitDoor != null && !hitDoor.IsOpened)
+        if (hitDoor != null && !hitDoor.IsOpened && hitDoor.CanOpen())
         {
             ShowPromptForDoor(hitDoor);
-
             if (Input.GetKeyDown(KeyCode.E))
             {
                 hitDoor.OpenDoor();

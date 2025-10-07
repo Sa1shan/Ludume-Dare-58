@@ -1,3 +1,4 @@
+using Arseniy.MiniGame.Scripts;
 using UnityEngine;
 
 public class QWEGame : MonoBehaviour

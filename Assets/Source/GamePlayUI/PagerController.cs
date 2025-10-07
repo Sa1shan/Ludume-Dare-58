@@ -1,13 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine.UI;
 using DG.Tweening;
 
 namespace Source.GamePlayUI
 {
     public class PagerController : MonoBehaviour
     { 
+        public static PagerController Instance { get; private set; }
+        
         [Header("Player")]
         [SerializeField] private GameObject player;
         
@@ -33,11 +34,10 @@ namespace Source.GamePlayUI
 
         private int _currentPageIndex = 0;
         private bool _isAnimatingText = false;
-        private int _currentIndex = 0;
         private Vector3 _playerStartPosition;
 
 
-        void Start()
+        void Awake()
         {
             pager.gameObject.SetActive(false);
             notificationTmPro.gameObject.SetActive(false);
@@ -48,6 +48,7 @@ namespace Source.GamePlayUI
                 tmPro.text = pages[0];
             }
             _playerStartPosition = player.transform.position;
+            Instance = this;
         }
 
         void Update()
@@ -153,22 +154,36 @@ namespace Source.GamePlayUI
             notificationTmPro.DOFade(1f,notificationAnimSpeed);
         }
 
-        private void NextMessage()
+        public void NextMessage()
         {
-            // 🔹 Логика для перехода к следующему уведомлению
+            // Если уже проигрывается анимация текста — не трогаем ничего
+            if (_isAnimatingText) return;
 
-            // 1️⃣ Проверяем, есть ли ещё страницы (уведомления) после текущей
-            // Если следующая страница есть — увеличиваем индекс
-            if (_currentPageIndex < pages.Count - 1)
+            // Если нет страниц — выходим
+            if (pages == null || pages.Count == 0) return;
+
+            // Если есть следующая страница — двигаем индекс, иначе ничего не делаем
+            if (_currentPageIndex >= pages.Count - 1)
             {
-                _currentPageIndex++;
+                // Можно раскомментировать следующую строку, чтобы зациклить лист:
+                // _currentPageIndex = 0;
+                return;
+            }
 
-                // 2️⃣ Очищаем текст перед новой анимацией
+            _currentPageIndex++;
+
+            // Очистим текст сразу, чтобы не было "нахлёста" старого текста
+            if (tmPro != null)
                 tmPro.text = "";
 
-                // 3️⃣ Запускаем анимацию текста для следующей страницы
+            // Если Pager сейчас не показан — показываем его и дочерняя логика
+            // (AnimatePager(true) после завершения вызовет ShowMessage с текущим индексом)
+            if (pager.gameObject.activeSelf)
+            {
+                // Pager уже открыт — просто показываем сообщение с анимацией
                 ShowMessage(_currentPageIndex);
             }
         }
+
     }
 }
