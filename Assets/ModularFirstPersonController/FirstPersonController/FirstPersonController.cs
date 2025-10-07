@@ -73,13 +73,13 @@ public class FirstPersonController : MonoBehaviour
     public float sprintFOV = 80f;
     public float sprintFOVStepTime = 10f;
 
-    // Sprint Bar
-    public bool useSprintBar = true;
-    public bool hideBarWhenFull = true;
-    public Image sprintBarBG;
-    public Image sprintBar;
-    public float sprintBarWidthPercent = .3f;
-    public float sprintBarHeightPercent = .015f;
+    // // Sprint Bar
+    // public bool useSprintBar = true;
+    // public bool hideBarWhenFull = true;
+    // public Image sprintBarBG;
+    // public Image sprintBar;
+    // public float sprintBarWidthPercent = .3f;
+    // public float sprintBarHeightPercent = .015f;
 
     // Internal Variables
     private CanvasGroup sprintBarCG;
@@ -155,47 +155,47 @@ public class FirstPersonController : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
-
-        if(crosshair)
-        {
-            crosshairObject.sprite = crosshairImage;
-            crosshairObject.color = crosshairColor;
-        }
-        else
-        {
-            crosshairObject.gameObject.SetActive(false);
-        }
-
-        #region Sprint Bar
-
-        sprintBarCG = GetComponentInChildren<CanvasGroup>();
-
-        if(useSprintBar)
-        {
-            sprintBarBG.gameObject.SetActive(true);
-            sprintBar.gameObject.SetActive(true);
-
-            float screenWidth = Screen.width;
-            float screenHeight = Screen.height;
-
-            sprintBarWidth = screenWidth * sprintBarWidthPercent;
-            sprintBarHeight = screenHeight * sprintBarHeightPercent;
-
-            sprintBarBG.rectTransform.sizeDelta = new Vector3(sprintBarWidth, sprintBarHeight, 0f);
-            sprintBar.rectTransform.sizeDelta = new Vector3(sprintBarWidth - 2, sprintBarHeight - 2, 0f);
-
-            if(hideBarWhenFull)
-            {
-                sprintBarCG.alpha = 0;
-            }
-        }
-        else
-        {
-            sprintBarBG.gameObject.SetActive(false);
-            sprintBar.gameObject.SetActive(false);
-        }
-
-        #endregion
+        
+        // if(crosshair)
+        // {
+        //     crosshairObject.sprite = crosshairImage;
+        //     crosshairObject.color = crosshairColor;
+        // }
+        // else
+        // {
+        //     crosshairObject.gameObject.SetActive(false);
+        // }
+        //
+        // #region Sprint Bar
+        //
+        // sprintBarCG = GetComponentInChildren<CanvasGroup>();
+        //
+        // if(useSprintBar)
+        // {
+        //     sprintBarBG.gameObject.SetActive(true);
+        //     sprintBar.gameObject.SetActive(true);
+        //
+        //     float screenWidth = Screen.width;
+        //     float screenHeight = Screen.height;
+        //
+        //     sprintBarWidth = screenWidth * sprintBarWidthPercent;
+        //     sprintBarHeight = screenHeight * sprintBarHeightPercent;
+        //
+        //     sprintBarBG.rectTransform.sizeDelta = new Vector3(sprintBarWidth, sprintBarHeight, 0f);
+        //     sprintBar.rectTransform.sizeDelta = new Vector3(sprintBarWidth - 2, sprintBarHeight - 2, 0f);
+        //
+        //     if(hideBarWhenFull)
+        //     {
+        //         sprintBarCG.alpha = 0;
+        //     }
+        // }
+        // else
+        // {
+        //     sprintBarBG.gameObject.SetActive(false);
+        //     sprintBar.gameObject.SetActive(false);
+        // }
+        //
+        // #endregion
     }
 
     float camRotation;
@@ -313,12 +313,12 @@ public class FirstPersonController : MonoBehaviour
                 sprintCooldown = sprintCooldownReset;
             }
 
-            // Handles sprintBar 
-            if(useSprintBar && !unlimitedSprint)
-            {
-                float sprintRemainingPercent = sprintRemaining / sprintDuration;
-                sprintBar.transform.localScale = new Vector3(sprintRemainingPercent, 1f, 1f);
-            }
+            // // Handles sprintBar 
+            // if(useSprintBar && !unlimitedSprint)
+            // {
+            //     float sprintRemainingPercent = sprintRemaining / sprintDuration;
+            //     sprintBar.transform.localScale = new Vector3(sprintRemainingPercent, 1f, 1f);
+            // }
         }
 
         #endregion
@@ -407,10 +407,10 @@ public class FirstPersonController : MonoBehaviour
                         Crouch();
                     }
 
-                    if (hideBarWhenFull && !unlimitedSprint)
-                    {
-                        sprintBarCG.alpha += 5 * Time.deltaTime;
-                    }
+                    // if (hideBarWhenFull && !unlimitedSprint)
+                    // {
+                    //     sprintBarCG.alpha += 5 * Time.deltaTime;
+                    // }
                 }
 
                 rb.AddForce(velocityChange, ForceMode.VelocityChange);
@@ -420,10 +420,10 @@ public class FirstPersonController : MonoBehaviour
             {
                 isSprinting = false;
 
-                if (hideBarWhenFull && sprintRemaining == sprintDuration)
-                {
-                    sprintBarCG.alpha -= 3 * Time.deltaTime;
-                }
+                // if (hideBarWhenFull && sprintRemaining == sprintDuration)
+                // {
+                //     sprintBarCG.alpha -= 3 * Time.deltaTime;
+                // }
 
                 targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
 
@@ -570,24 +570,24 @@ public class FirstPersonController : MonoBehaviour
         fpc.maxLookAngle = EditorGUILayout.Slider(new GUIContent("Max Look Angle", "Determines the max and min angle the player camera is able to look."), fpc.maxLookAngle, 40, 90);
         GUI.enabled = true;
 
-        fpc.lockCursor = EditorGUILayout.ToggleLeft(new GUIContent("Lock and Hide Cursor", "Turns off the cursor visibility and locks it to the middle of the screen."), fpc.lockCursor);
-
-        fpc.crosshair = EditorGUILayout.ToggleLeft(new GUIContent("Auto Crosshair", "Determines if the basic crosshair will be turned on, and sets is to the center of the screen."), fpc.crosshair);
+        // fpc.lockCursor = EditorGUILayout.ToggleLeft(new GUIContent("Lock and Hide Cursor", "Turns off the cursor visibility and locks it to the middle of the screen."), fpc.lockCursor);
+        //
+        // fpc.crosshair = EditorGUILayout.ToggleLeft(new GUIContent("Auto Crosshair", "Determines if the basic crosshair will be turned on, and sets is to the center of the screen."), fpc.crosshair);
 
         // Only displays crosshair options if crosshair is enabled
-        if(fpc.crosshair) 
-        { 
-            EditorGUI.indentLevel++; 
-            EditorGUILayout.BeginHorizontal(); 
-            EditorGUILayout.PrefixLabel(new GUIContent("Crosshair Image", "Sprite to use as the crosshair.")); 
-            fpc.crosshairImage = (Sprite)EditorGUILayout.ObjectField(fpc.crosshairImage, typeof(Sprite), false);
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            fpc.crosshairColor = EditorGUILayout.ColorField(new GUIContent("Crosshair Color", "Determines the color of the crosshair."), fpc.crosshairColor);
-            EditorGUILayout.EndHorizontal();
-            EditorGUI.indentLevel--; 
-        }
+        // if(fpc.crosshair) 
+        // { 
+        //     EditorGUI.indentLevel++; 
+        //     EditorGUILayout.BeginHorizontal(); 
+        //     EditorGUILayout.PrefixLabel(new GUIContent("Crosshair Image", "Sprite to use as the crosshair.")); 
+        //     fpc.crosshairImage = (Sprite)EditorGUILayout.ObjectField(fpc.crosshairImage, typeof(Sprite), false);
+        //     EditorGUILayout.EndHorizontal();
+        //
+        //     EditorGUILayout.BeginHorizontal();
+        //     fpc.crosshairColor = EditorGUILayout.ColorField(new GUIContent("Crosshair Color", "Determines the color of the crosshair."), fpc.crosshairColor);
+        //     EditorGUILayout.EndHorizontal();
+        //     EditorGUI.indentLevel--; 
+        // }
 
         EditorGUILayout.Space();
 
@@ -641,37 +641,37 @@ public class FirstPersonController : MonoBehaviour
         fpc.sprintFOV = EditorGUILayout.Slider(new GUIContent("Sprint FOV", "Determines the field of view the camera changes to while sprinting."), fpc.sprintFOV, fpc.fov, 179f);
         fpc.sprintFOVStepTime = EditorGUILayout.Slider(new GUIContent("Step Time", "Determines how fast the FOV transitions while sprinting."), fpc.sprintFOVStepTime, .1f, 20f);
 
-        fpc.useSprintBar = EditorGUILayout.ToggleLeft(new GUIContent("Use Sprint Bar", "Determines if the default sprint bar will appear on screen."), fpc.useSprintBar);
-
-        // Only displays sprint bar options if sprint bar is enabled
-        if(fpc.useSprintBar)
-        {
-            EditorGUI.indentLevel++;
-
-            EditorGUILayout.BeginHorizontal();
-            fpc.hideBarWhenFull = EditorGUILayout.ToggleLeft(new GUIContent("Hide Full Bar", "Hides the sprint bar when sprint duration is full, and fades the bar in when sprinting. Disabling this will leave the bar on screen at all times when the sprint bar is enabled."), fpc.hideBarWhenFull);
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel(new GUIContent("Bar BG", "Object to be used as sprint bar background."));
-            fpc.sprintBarBG = (Image)EditorGUILayout.ObjectField(fpc.sprintBarBG, typeof(Image), true);
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            EditorGUILayout.PrefixLabel(new GUIContent("Bar", "Object to be used as sprint bar foreground."));
-            fpc.sprintBar = (Image)EditorGUILayout.ObjectField(fpc.sprintBar, typeof(Image), true);
-            EditorGUILayout.EndHorizontal();
-
-
-            EditorGUILayout.BeginHorizontal();
-            fpc.sprintBarWidthPercent = EditorGUILayout.Slider(new GUIContent("Bar Width", "Determines the width of the sprint bar."), fpc.sprintBarWidthPercent, .1f, .5f);
-            EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.BeginHorizontal();
-            fpc.sprintBarHeightPercent = EditorGUILayout.Slider(new GUIContent("Bar Height", "Determines the height of the sprint bar."), fpc.sprintBarHeightPercent, .001f, .025f);
-            EditorGUILayout.EndHorizontal();
-            EditorGUI.indentLevel--;
-        }
+        // fpc.useSprintBar = EditorGUILayout.ToggleLeft(new GUIContent("Use Sprint Bar", "Determines if the default sprint bar will appear on screen."), fpc.useSprintBar);
+        //
+        // // Only displays sprint bar options if sprint bar is enabled
+        // if(fpc.useSprintBar)
+        // {
+        //     EditorGUI.indentLevel++;
+        //
+        //     EditorGUILayout.BeginHorizontal();
+        //     fpc.hideBarWhenFull = EditorGUILayout.ToggleLeft(new GUIContent("Hide Full Bar", "Hides the sprint bar when sprint duration is full, and fades the bar in when sprinting. Disabling this will leave the bar on screen at all times when the sprint bar is enabled."), fpc.hideBarWhenFull);
+        //     EditorGUILayout.EndHorizontal();
+        //
+        //     EditorGUILayout.BeginHorizontal();
+        //     EditorGUILayout.PrefixLabel(new GUIContent("Bar BG", "Object to be used as sprint bar background."));
+        //     fpc.sprintBarBG = (Image)EditorGUILayout.ObjectField(fpc.sprintBarBG, typeof(Image), true);
+        //     EditorGUILayout.EndHorizontal();
+        //
+        //     EditorGUILayout.BeginHorizontal();
+        //     EditorGUILayout.PrefixLabel(new GUIContent("Bar", "Object to be used as sprint bar foreground."));
+        //     fpc.sprintBar = (Image)EditorGUILayout.ObjectField(fpc.sprintBar, typeof(Image), true);
+        //     EditorGUILayout.EndHorizontal();
+        //
+        //
+        //     EditorGUILayout.BeginHorizontal();
+        //     fpc.sprintBarWidthPercent = EditorGUILayout.Slider(new GUIContent("Bar Width", "Determines the width of the sprint bar."), fpc.sprintBarWidthPercent, .1f, .5f);
+        //     EditorGUILayout.EndHorizontal();
+        //
+        //     EditorGUILayout.BeginHorizontal();
+        //     fpc.sprintBarHeightPercent = EditorGUILayout.Slider(new GUIContent("Bar Height", "Determines the height of the sprint bar."), fpc.sprintBarHeightPercent, .001f, .025f);
+        //     EditorGUILayout.EndHorizontal();
+        //     EditorGUI.indentLevel--;
+        // }
         GUI.enabled = true;
 
         EditorGUILayout.Space();
