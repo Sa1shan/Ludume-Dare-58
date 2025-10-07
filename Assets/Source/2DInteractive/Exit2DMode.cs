@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.Serialization;
 
 namespace Source._2DInteractive
 {

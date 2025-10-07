@@ -12,7 +12,7 @@ namespace Source.GamePlayUI
         [TextArea(5, 15)] public string text;       // Текст диалога
     }
 
-    public class DialogSystem : MonoBehaviour
+    public class DialogueSystem : MonoBehaviour
     {
         [Header("Привязки к TextMeshProUGUI")]
         [SerializeField] private TextMeshProUGUI tmp1;      // Для обычных текстов
@@ -22,9 +22,9 @@ namespace Source.GamePlayUI
         [SerializeField] private float animationSpeed = 0.05f; // Задержка между буквами
 
         [Header("Диалоги")]
-        [SerializeField] private List<DialogLine> dialogLines = new List<DialogLine>();
+        [SerializeField] private List<DialogLine> dialogueText = new List<DialogLine>();
 
-        [SerializeField] private GameObject dialogue;
+        [SerializeField] private GameObject dialogueBackground;
 
         [SerializeField] private GameObject exitButton;
         
@@ -41,12 +41,12 @@ namespace Source.GamePlayUI
 
         private void Update()
         {
-            if (dialogue.gameObject.activeSelf)
+            if (dialogueBackground.gameObject.activeSelf)
             {
                 // Показываем первый элемент один раз, когда объект активен
                 if (!_firstLineShown)
                 {
-                    if (dialogLines.Count > 0)
+                    if (dialogueText.Count > 0)
                     {
                         ShowNextPair(auto: true);
                         _firstLineShown = true;
@@ -64,13 +64,13 @@ namespace Source.GamePlayUI
 // Немного изменяем ShowNextPair
         private void ShowNextPair(bool auto = false)
         {
-            if (currentIndex >= dialogLines.Count)
+            if (currentIndex >= dialogueText.Count)
             {
                 OnDialogEnd();
                 return;
             }
 
-            DialogLine line = dialogLines[currentIndex];
+            DialogLine line = dialogueText[currentIndex];
 
             nameTmp1.text = line.name;
             AnimateText(tmp1, line.text);
@@ -120,7 +120,7 @@ namespace Source.GamePlayUI
 
         private void OnDialogEnd()
         {
-            dialogue.gameObject.SetActive(false);
+            dialogueBackground.gameObject.SetActive(false);
             exitButton.gameObject.SetActive(true);
         }
     }

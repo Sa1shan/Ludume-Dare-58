@@ -14,6 +14,7 @@ namespace Source.GamePlayUI
         [Header("Pager и текст")]
         [SerializeField] private RectTransform pager;
         [SerializeField] private TextMeshProUGUI tmPro;
+        [TextArea(5, 15)]
         [SerializeField] private string notification;
         [SerializeField] private TextMeshProUGUI notificationTmPro;
 
@@ -70,10 +71,10 @@ namespace Source.GamePlayUI
                 notificationTmPro.gameObject.SetActive(false);
             }
 
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                Notificaion();
-            }
+            // if (Input.GetKeyDown(KeyCode.N))
+            // {
+            //     Notificaion();
+            // }
             notificationTmPro.text = notification;
         }
 
@@ -146,7 +147,7 @@ namespace Source.GamePlayUI
             DOVirtual.DelayedCall(delay, () => { _isAnimatingText = false; });
         }
 
-        private void Notificaion()
+        public void Notificaion()
         {
             notificationTmPro.gameObject.SetActive(true);
             notificationTmPro.DOFade(1f,notificationAnimSpeed);
@@ -167,17 +168,6 @@ namespace Source.GamePlayUI
 
                 // 3️⃣ Запускаем анимацию текста для следующей страницы
                 ShowMessage(_currentPageIndex);
-            }
-            else
-            {
-                // 4️⃣ Если уведомления закончились — можно спрятать панель
-                // или сбросить индекс для повторного показа
-                // pager.gameObject.SetActive(false);
-
-                // currentPageIndex = 0; // если хочешь, чтобы цикл начинался заново
-
-                // 🔸 Здесь ты потом добавишь свой триггер, когда все уведомления пройдены
-                // Например, можно вызвать событие или метод из GameManager
             }
         }
     }

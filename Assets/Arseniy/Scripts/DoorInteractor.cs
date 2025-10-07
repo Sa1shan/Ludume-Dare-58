@@ -13,6 +13,7 @@ public class DoorInteractor : MonoBehaviour
 
     [Tooltip("Cinemachine virtual camera (optional) — будет обнулён priority при открытии.")]
     public CinemachineCamera cinemachineCam;
+    [SerializeField] private InteractiableController interactiableController;
 
     // состояние
     private bool doorOpened = false;
@@ -20,7 +21,6 @@ public class DoorInteractor : MonoBehaviour
     // Публичный геттер, чтобы менеджер знал, можно ли взаимодействовать
     public bool IsOpened => doorOpened;
 
-    [SerializeField] private InteractiableController interactiableController;
     // Публичный метод открытия — вызывается менеджером (DoorRaycaster)
     public void OpenDoor()
     {
