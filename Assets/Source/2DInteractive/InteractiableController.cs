@@ -14,7 +14,7 @@ namespace Source._2DInteractive
         
         [Header("Interactiable")]
         [SerializeField] private Image blackBackground;
-        [SerializeField] private List<Button> buttons = new List<Button>();
+        public List<Button> buttons = new List<Button>();
         [SerializeField] private Image background;
 
         [Header("Float")]

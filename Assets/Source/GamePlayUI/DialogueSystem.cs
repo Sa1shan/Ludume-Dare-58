@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Arseniy.MiniGame.Scripts;
 using DG.Tweening;
+using Source._2DInteractive;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,9 +31,12 @@ namespace Source.GamePlayUI
 
         [SerializeField] private Button exitButton;
         [SerializeField] private Button startButtonStartMinigame;
-        [SerializeField] private bool dialogue1;
-        [SerializeField] private bool dialogue2;
-        [SerializeField] private bool dialogue3;
+        [SerializeField] private bool dialogue4;
+
+        [HideInInspector] public bool dialogue4IsFinish;
+
+        private InteractiableController _interactiableController;
+        
         private bool _firstLineShown = false;
 
         private int currentIndex = 0;      // текущий индекс пары
@@ -42,6 +46,7 @@ namespace Source.GamePlayUI
         
         private void Start()
         {
+            _interactiableController = GetComponent<InteractiableController>();
             tmp1.text = "";
             nameTmp1.text = "";
             _uiManager = UIManager.Instance;
@@ -128,20 +133,26 @@ namespace Source.GamePlayUI
 
         private void OnDialogEnd()
         {
-            dialogueBackground.gameObject.SetActive(false);
-            startButtonStartMinigame.gameObject.SetActive(true);
-            // if (dialogue1)
-            // {
-            //    startButtonStartMinigame.gameObject.SetActive(true);
-            // }
-            // // if (dialogue2)
-            // // {
-            // //     startButtonStartMinigame.gameObject.SetActive(true);
-            // // }
-            // if (dialogue3)
-            // {
-            //     startButtonStartMinigame.gameObject.SetActive(true);
-            // }
+            dialogueBackground.gameObject.SetActive(false); 
+            if(!dialogue4) startButtonStartMinigame.gameObject.SetActive(true);
+
+            if (dialogue4)
+            {
+                dialogue4IsFinish = true;
+                Time.timeScale = 1;
+                
+                //
+            }
+            if(!dialogue4IsFinish)
+            {
+                foreach (var btn in _interactiableController.buttons)
+                {
+                    if (btn == null) continue;
+                    // Полностью переинициализируем событие, чтобы удалить ВСЕ ссылки (включая добавленные в инспекторе)
+                    btn.onClick = new Button.ButtonClickedEvent();
+                }
+            }
+            
         }
 
         public void RevertTimeScale()
