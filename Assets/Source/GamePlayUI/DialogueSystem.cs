@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Arseniy.MiniGame.Scripts;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -27,16 +28,19 @@ namespace Source.GamePlayUI
         [SerializeField] private GameObject dialogueBackground;
 
         [SerializeField] private GameObject exitButton;
-        
+        [SerializeField] private bool ifThirdDialogue;
         private bool _firstLineShown = false;
 
         private int currentIndex = 0;      // текущий индекс пары
         private bool isAnimating = false;  // блокировка ЛКМ
 
+        private UIManager _uiManager;
+        
         private void Start()
         {
             tmp1.text = "";
             nameTmp1.text = "";
+            _uiManager = UIManager.Instance;
         }
 
         private void Update()
@@ -121,7 +125,18 @@ namespace Source.GamePlayUI
         private void OnDialogEnd()
         {
             dialogueBackground.gameObject.SetActive(false);
-            exitButton.gameObject.SetActive(true);
+            
+            if (!ifThirdDialogue) exitButton.gameObject.SetActive(true);
+            
+            if (ifThirdDialogue)
+            {
+                _uiManager.startButton.gameObject.SetActive(true);
+            }
+        }
+
+        public void RevertTimeScale()
+        {
+            Time.timeScale = 1;
         }
     }
 }
