@@ -25,6 +25,7 @@ namespace Arseniy.MiniGame.Scripts
         public float feedbackDuration = 1f;
 
         private Coroutine feedbackCoroutine;
+        [SerializeField] private GameObject exitButton;
 
         void Awake()
         {
@@ -93,8 +94,17 @@ namespace Arseniy.MiniGame.Scripts
             if (endPanel) endPanel.SetActive(true);
 
             if (endText) endText.text = win ? "Победа!" : "Проигрыш";
-            // делаем StartButton видимым для новой партии (если нужно)
-            if (startButton) startButton.gameObject.SetActive(true);
+
+            if (win)
+            {
+                exitButton.gameObject.SetActive(true);
+            }
+            
+            if (!win)
+            {
+                startButton.gameObject.SetActive(true);
+            }
+            
             // скрываем игровую UI (чтобы не мешала)
             ShowGameplayUI(false);
         }
