@@ -3,6 +3,7 @@ using Arseniy.MiniGame.Scripts;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Source.GamePlayUI
 {
@@ -27,8 +28,11 @@ namespace Source.GamePlayUI
 
         [SerializeField] private GameObject dialogueBackground;
 
-        [SerializeField] private GameObject exitButton;
-        [SerializeField] private bool ifThirdDialogue;
+        [SerializeField] private Button exitButton;
+        [SerializeField] private Button startButtonStartMinigame;
+        [SerializeField] private bool dialogue1;
+        [SerializeField] private bool dialogue2;
+        [SerializeField] private bool dialogue3;
         private bool _firstLineShown = false;
 
         private int currentIndex = 0;      // текущий индекс пары
@@ -65,7 +69,7 @@ namespace Source.GamePlayUI
             }
         }
 
-// Немного изменяем ShowNextPair
+        // Немного изменяем ShowNextPair
         private void ShowNextPair(bool auto = false)
         {
             if (currentIndex >= dialogueText.Count)
@@ -125,13 +129,19 @@ namespace Source.GamePlayUI
         private void OnDialogEnd()
         {
             dialogueBackground.gameObject.SetActive(false);
-            
-            if (!ifThirdDialogue) exitButton.gameObject.SetActive(true);
-            
-            if (ifThirdDialogue)
-            {
-                _uiManager.startButton.gameObject.SetActive(true);
-            }
+            startButtonStartMinigame.gameObject.SetActive(true);
+            // if (dialogue1)
+            // {
+            //    startButtonStartMinigame.gameObject.SetActive(true);
+            // }
+            // // if (dialogue2)
+            // // {
+            // //     startButtonStartMinigame.gameObject.SetActive(true);
+            // // }
+            // if (dialogue3)
+            // {
+            //     startButtonStartMinigame.gameObject.SetActive(true);
+            // }
         }
 
         public void RevertTimeScale()

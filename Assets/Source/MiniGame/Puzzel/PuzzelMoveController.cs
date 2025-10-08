@@ -7,6 +7,9 @@ namespace Source.MiniGame.Puzzel
 {
     public class DragUIManager : MonoBehaviour
     {
+        [SerializeField] private GameObject puzzle;
+        [SerializeField] private GameObject exitButton;
+        
         [Header("Перетаскиваемые объекты")]
         [SerializeField] private List<Image> draggableImages;
 
@@ -18,6 +21,7 @@ namespace Source.MiniGame.Puzzel
 
         [Header("Радиус притягивания (в пикселях или единицах Canvas)")]
         [SerializeField] private float snapRadius;
+        
 
         private List<List<Transform>> targetsForImage = new List<List<Transform>>();
 
@@ -60,9 +64,37 @@ namespace Source.MiniGame.Puzzel
                     closest = target;
                 }
             }
-
+        
             return closest;
         }
+        
+        public bool AreAllTargetsFilled()
+        {
+            float threshold = 0.1f; // погрешность для сравнения позиций
+
+            for (int i = 0; i < targetsForImage.Count; i++)
+            {
+                foreach (var target in targetsForImage[i])
+                {
+                    bool filled = false;
+                    foreach (var img in draggableImages)
+                    {
+                        if (Vector3.Distance(img.transform.position, target.position) <= threshold)
+                        {
+                            filled = true;
+                            break;
+                        }
+                    }
+
+                    if (!filled)
+                        return false;
+                }
+            }
+            puzzle.SetActive(false);
+            exitButton.SetActive(true);
+            return true;
+        }
+
     }
     public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
     {
@@ -109,6 +141,7 @@ namespace Source.MiniGame.Puzzel
             }
         }
 
+        // Внутри DragUI
         public void OnEndDrag(PointerEventData eventData)
         {
             if (isLocked) return;
@@ -117,14 +150,15 @@ namespace Source.MiniGame.Puzzel
 
             if (snapTarget != null)
             {
-                // Притягиваем к слоту и фиксируем
                 rectTransform.position = snapTarget.position;
                 isLocked = true;
-
-                // Возвращаем на исходное место в иерархии
                 transform.SetSiblingIndex(originalSiblingIndex);
             }
-            // Если объект мимо слота — ничего не делаем, остаётся на переднем плане
+
+            // Сразу проверяем после дропа, все ли слоты заняты
+            manager.AreAllTargetsFilled();
         }
+
+
     }
 }
