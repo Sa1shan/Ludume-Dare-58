@@ -1,3 +1,4 @@
+using System;
 using Source._2DInteractive;
 using UnityEngine;
 using Unity.Cinemachine;
@@ -23,7 +24,12 @@ public class DoorInteractor : MonoBehaviour
     // Публичный геттер, чтобы менеджер знал, можно ли взаимодействовать
     public bool IsOpened => doorOpened;
 
-    // Публичный метод открытия — вызывается менеджером (DoorRaycaster)
+    private SoundPlayer _soundPlayer;
+
+    private void Start()
+    {
+        _soundPlayer = GetComponent<SoundPlayer>();
+    }
 
     public void DoorIndexAddition()
     {
@@ -58,5 +64,8 @@ public class DoorInteractor : MonoBehaviour
                 Debug.LogWarning($"[DoorInteractor] Ошибка при изменении приоритета камеры: {e.Message}");
             }
         }
+
+        
+        _soundPlayer.PlaySounds();
     }
 }

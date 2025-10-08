@@ -6148,6 +6148,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1983254094}
+        m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
+        m_MethodName: PlaySounds
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1602303087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6586,6 +6598,8 @@ GameObject:
   - component: {fileID: 1687324761}
   - component: {fileID: 1687324762}
   - component: {fileID: 1687324763}
+  - component: {fileID: 1687324764}
+  - component: {fileID: 1687324765}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6770,6 +6784,111 @@ MonoBehaviour:
     m_Bits: 4294967295
   doorTag: Door
   sharedPromptPanel: {fileID: 1543007264}
+--- !u!81 &1687324764
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687324756}
+  m_Enabled: 1
+--- !u!82 &1687324765
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1687324756}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 25
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!65 &1715406067
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7114,6 +7233,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1983254094}
+        m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
+        m_MethodName: PlaySounds
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1818537233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7264,6 +7395,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1816569900}
         m_TargetAssemblyTypeName: Source.GamePlayUI.PagerController, Assembly-CSharp
         m_MethodName: Notificaion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1983254094}
+        m_TargetAssemblyTypeName: SoundPlayer, Assembly-CSharp
+        m_MethodName: PlaySounds
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8202,6 +8345,54 @@ Transform:
   m_Children: []
   m_Father: {fileID: 843873666}
   m_LocalEulerAnglesHint: {x: 4.118, y: 182.856, z: -0.099}
+--- !u!1 &1983254093
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1983254095}
+  - component: {fileID: 1983254094}
+  m_Layer: 0
+  m_Name: DoorCloseSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1983254094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983254093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37f9b8f45dc7830439145637b48b1d39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: 840c8f84427b3f34080e41d3f75e4933, type: 3}
+  volume: 1
+  audioSource: {fileID: 1687324765}
+--- !u!4 &1983254095
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983254093}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1984802579
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8945,6 +9136,7 @@ GameObject:
   - component: {fileID: 8418640414298317373}
   - component: {fileID: 175179860}
   - component: {fileID: 175179859}
+  - component: {fileID: 8482381505477962857}
   m_Layer: 0
   m_Name: Door1
   m_TagString: Door
@@ -9889,6 +10081,7 @@ GameObject:
   - component: {fileID: 4459864851433938277}
   - component: {fileID: 4459864851433938276}
   - component: {fileID: 4459864851433938272}
+  - component: {fileID: 4459864851433938284}
   - component: {fileID: 4459864851433938273}
   m_Layer: 0
   m_Name: FirstPersonController
@@ -9897,6 +10090,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4459864851433938284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4459864851433938283}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af74be43f9c6b8842a30c3ae952f9a3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 4459864851433938272}
+  footstepClips:
+  - {fileID: 8300000, guid: 985609e2ee52b8745b04ef2e8ae8eed4, type: 3}
+  - {fileID: 8300000, guid: 01f37d21a1a488c489c0a47d4bfdb4e3, type: 3}
+  - {fileID: 8300000, guid: 985609e2ee52b8745b04ef2e8ae8eed4, type: 3}
+  - {fileID: 8300000, guid: 01f37d21a1a488c489c0a47d4bfdb4e3, type: 3}
+  stepDistance: 2.2
+  minMoveSpeed: 0.1
+  useRandom: 1
+  speedMultiplier: 1
+  audioSource: {fileID: 1687324765}
 --- !u!1 &4459864851460092756
 GameObject:
   m_ObjectHideFlags: 0
@@ -10531,6 +10747,7 @@ GameObject:
   - component: {fileID: 8544783547760503950}
   - component: {fileID: 343371158}
   - component: {fileID: 8544783547760503951}
+  - component: {fileID: 8544783547760503952}
   m_Layer: 0
   m_Name: Door3
   m_TagString: Door
@@ -10591,6 +10808,22 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2076850631170500402}
   m_Mesh: {fileID: -8678823145569952518, guid: 3feeb991586bf89428933d06298c22e3, type: 3}
+--- !u!114 &8482381505477962857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076850631170500402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37f9b8f45dc7830439145637b48b1d39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: c5b2c61390c6c81469074ea0ab63e646, type: 3}
+  volume: 1
+  audioSource: {fileID: 1687324765}
 --- !u!23 &8544783547760503950
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10654,6 +10887,22 @@ MonoBehaviour:
   interactiableController: {fileID: 1938234850}
   doorIndex: 3
   currentDoor: 2
+--- !u!114 &8544783547760503952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8416272008749107878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37f9b8f45dc7830439145637b48b1d39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: c5b2c61390c6c81469074ea0ab63e646, type: 3}
+  volume: 1
+  audioSource: {fileID: 1687324765}
 --- !u!1 &8707273952219122515
 GameObject:
   m_ObjectHideFlags: 0
@@ -10667,6 +10916,7 @@ GameObject:
   - component: {fileID: 7762067043013175634}
   - component: {fileID: 1984802579}
   - component: {fileID: 8707273952219122516}
+  - component: {fileID: 8707273952219122517}
   m_Layer: 0
   m_Name: Door2.col
   m_TagString: Door
@@ -10692,6 +10942,22 @@ MonoBehaviour:
   interactiableController: {fileID: 2076378277}
   doorIndex: 2
   currentDoor: 1
+--- !u!114 &8707273952219122517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8707273952219122515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37f9b8f45dc7830439145637b48b1d39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: c5b2c61390c6c81469074ea0ab63e646, type: 3}
+  volume: 1
+  audioSource: {fileID: 1687324765}
 --- !u!1 &8757042445645228071
 GameObject:
   m_ObjectHideFlags: 0
@@ -10705,6 +10971,7 @@ GameObject:
   - component: {fileID: 6745302439554272396}
   - component: {fileID: 1715406067}
   - component: {fileID: 8894691112625550402}
+  - component: {fileID: 8894691112625550403}
   m_Layer: 0
   m_Name: Door4
   m_TagString: Door
@@ -10738,6 +11005,22 @@ MonoBehaviour:
   interactiableController: {fileID: 1138013153}
   doorIndex: 4
   currentDoor: 3
+--- !u!114 &8894691112625550403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8757042445645228071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37f9b8f45dc7830439145637b48b1d39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - {fileID: 8300000, guid: c5b2c61390c6c81469074ea0ab63e646, type: 3}
+  volume: 1
+  audioSource: {fileID: 1687324765}
 --- !u!33 &8897240366567740409
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -10797,3 +11080,4 @@ SceneRoots:
   - {fileID: 1148782141}
   - {fileID: 65094000}
   - {fileID: 1919175253}
+  - {fileID: 1983254095}

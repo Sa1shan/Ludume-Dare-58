@@ -10,6 +10,7 @@ namespace Source._2DInteractive
         [SerializeField] private DoorInteractor doorInteractor;
         [SerializeField] private InteractiableController interactiableController;
         private PagerController _pagerController;
+        
 
         private void Start()
         {
