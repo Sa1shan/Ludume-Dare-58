@@ -17,7 +17,7 @@ namespace Source.MiniGame.Puzzel
         [SerializeField] private int slotsPerImage = 1;
 
         [Header("Радиус притягивания (в пикселях или единицах Canvas)")]
-        [SerializeField] private float snapRadius = 50f;
+        [SerializeField] private float snapRadius;
 
         private List<List<Transform>> targetsForImage = new List<List<Transform>>();
 
@@ -64,7 +64,6 @@ namespace Source.MiniGame.Puzzel
             return closest;
         }
     }
-
     public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
     {
         [HideInInspector] public DragUIManager manager;
@@ -73,16 +72,23 @@ namespace Source.MiniGame.Puzzel
         private RectTransform rectTransform;
         private Canvas canvas;
         private bool isLocked = false;
+        private int originalSiblingIndex;
+        private Transform originalParent;
 
         private void Start()
         {
             rectTransform = GetComponent<RectTransform>();
             canvas = GetComponentInParent<Canvas>();
+            originalParent = transform.parent;
+            originalSiblingIndex = transform.GetSiblingIndex(); // запоминаем исходное место
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
             if (isLocked) return;
+
+            // Поднимаем объект на передний план
+            transform.SetAsLastSibling();
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -108,11 +114,17 @@ namespace Source.MiniGame.Puzzel
             if (isLocked) return;
 
             Transform snapTarget = manager.GetSnapTarget(rectTransform.position, imageIndex);
+
             if (snapTarget != null)
             {
+                // Притягиваем к слоту и фиксируем
                 rectTransform.position = snapTarget.position;
                 isLocked = true;
+
+                // Возвращаем на исходное место в иерархии
+                transform.SetSiblingIndex(originalSiblingIndex);
             }
+            // Если объект мимо слота — ничего не делаем, остаётся на переднем плане
         }
     }
 }
