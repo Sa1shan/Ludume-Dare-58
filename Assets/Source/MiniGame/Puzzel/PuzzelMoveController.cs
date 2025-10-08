@@ -16,11 +16,13 @@ namespace Source.MiniGame.Puzzel
         [Header("Количество слотов на каждый Image")]
         [SerializeField] private int slotsPerImage = 1;
 
+        [Header("Радиус притягивания (в пикселях или единицах Canvas)")]
+        [SerializeField] private float snapRadius = 50f;
+
         private List<List<Transform>> targetsForImage = new List<List<Transform>>();
 
         private void Start()
         {
-            // разбиваем слоты на подсписки для каждого Image
             targetsForImage.Clear();
             int index = 0;
             for (int i = 0; i < draggableImages.Count; i++)
@@ -47,7 +49,7 @@ namespace Source.MiniGame.Puzzel
             if (imageIndex < 0 || imageIndex >= targetsForImage.Count) return null;
 
             Transform closest = null;
-            float minDist = 50f;
+            float minDist = snapRadius; // используем поле из инспектора
 
             foreach (var target in targetsForImage[imageIndex])
             {
@@ -70,7 +72,6 @@ namespace Source.MiniGame.Puzzel
 
         private RectTransform rectTransform;
         private Canvas canvas;
-        private Vector2 offset;
         private bool isLocked = false;
 
         private void Start()
@@ -86,36 +87,31 @@ namespace Source.MiniGame.Puzzel
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 0;
-
-            // ничего не сохраняем, просто фиксируем что начали перетаскивать
         }
 
         public void OnDrag(PointerEventData eventData)
         {
             if (isLocked) return;
 
-            Vector3 worldPos;
             if (RectTransformUtility.ScreenPointToWorldPointInRectangle(
-                    canvas.transform as RectTransform,
-                    eventData.position,
-                    eventData.pressEventCamera,
-                    out worldPos))
+                canvas.transform as RectTransform,
+                eventData.position,
+                eventData.pressEventCamera,
+                out Vector3 worldPos))
             {
                 rectTransform.position = worldPos;
             }
         }
 
-
         public void OnEndDrag(PointerEventData eventData)
         {
             if (isLocked) return;
 
-            // проверяем ближайший слот для магнитного эффекта
             Transform snapTarget = manager.GetSnapTarget(rectTransform.position, imageIndex);
             if (snapTarget != null)
             {
                 rectTransform.position = snapTarget.position;
-                isLocked = true; // больше нельзя двигать
+                isLocked = true;
             }
         }
     }
