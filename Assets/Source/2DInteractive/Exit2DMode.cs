@@ -10,11 +10,12 @@ namespace Source._2DInteractive
         [SerializeField] private DoorInteractor doorInteractor;
         [SerializeField] private InteractiableController interactiableController;
         private PagerController _pagerController;
-        
+        private TaskBarController _taskBarController;
 
         private void Start()
         {
             _pagerController = PagerController.Instance;
+            _taskBarController = TaskBarController.Instance;
         }
 
         public void OnClickExit()
@@ -32,6 +33,10 @@ namespace Source._2DInteractive
             Time.timeScale = 1;
 
             interactiableController.closeCutscene.stopped += OnCloseCutsceneStopped;
+
+            _pagerController.pagerWasOpen = false;
+            _pagerController.ShowNotification();
+            _taskBarController.taskBarWasClosed = false;
         }
 
         private void OnCloseCutsceneStopped(PlayableDirector director)

@@ -1,3 +1,4 @@
+using Source.GamePlayUI;
 using UnityEngine;
 
 [AddComponentMenu("Interaction/Door Raycaster (Manager)")]
@@ -17,6 +18,8 @@ public class DoorRaycaster : MonoBehaviour
     
     // внутренняя ссылка на DoorInteractor текущей в прицеле двери
     private DoorInteractor currentDoorInteractor;
+    private PagerController _pagerController;
+    private TaskBarController _taskBarController;
 
     void Start()
     {
@@ -29,6 +32,8 @@ public class DoorRaycaster : MonoBehaviour
 
         if (sharedPromptPanel != null)
             sharedPromptPanel.SetActive(false);
+        _pagerController = PagerController.Instance;
+        _taskBarController = TaskBarController.Instance;
     }
 
     void Update()
@@ -79,7 +84,7 @@ public class DoorRaycaster : MonoBehaviour
         }
 
         // Если нашли DoorInteractor под прицелом и дверь не открыта, показываем панель
-        if (hitDoor != null && !hitDoor.IsOpened && hitDoor.CanOpen())
+        if (hitDoor != null && !hitDoor.IsOpened && hitDoor.CanOpen() && _pagerController.pagerWasOpen)
         {
             ShowPromptForDoor(hitDoor);
             if (Input.GetKeyDown(KeyCode.E))
@@ -87,6 +92,7 @@ public class DoorRaycaster : MonoBehaviour
                 hitDoor.OpenDoor();
                 // после открытия — скрываем UI
                 HidePrompt();
+                _taskBarController.taskBarWasClosed = true;
             }
         }
         else

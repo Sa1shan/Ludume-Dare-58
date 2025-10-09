@@ -42,6 +42,8 @@ namespace Source.GamePlayUI
         private bool _isFirstOpen = true; // Флаг первого открытия пейджера
         private bool _isPagerAnimating = false; // Флаг анимации пейджера (открытие/закрытие)
 
+        public bool pagerWasOpen;
+
         [System.Serializable]
         public class PageData
         {
@@ -70,10 +72,9 @@ namespace Source.GamePlayUI
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.C) && !pagerWasOpen)
             {
                 if (_isAnimatingText || _isPagerAnimating) return;
-
                 if (!pager.gameObject.activeSelf)
                 {
                     pager.gameObject.SetActive(true);
@@ -85,6 +86,7 @@ namespace Source.GamePlayUI
                 {
                     AnimatePager(false);
                     _isFirstOpen = false;
+                    pagerWasOpen = true;
                 }
             }
 
@@ -93,6 +95,7 @@ namespace Source.GamePlayUI
 
         private void AnimatePager(bool isEntering)
         {
+            
             _isPagerAnimating = true;
             Vector2 targetPos = isEntering ? endPosition : startPosition;
 

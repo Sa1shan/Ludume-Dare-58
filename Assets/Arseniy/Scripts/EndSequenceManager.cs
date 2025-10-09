@@ -136,6 +136,9 @@ public class EndSequenceManager : MonoBehaviour
     {
         for (int i = 0; i < imageButtons.Length && i < newSprites.Length; i++)
         {
+            SpriteState sprite = imageButtons[i].spriteState;
+            sprite.highlightedSprite = null;
+            imageButtons[i].spriteState = sprite;
             if (imageButtons[i] == null) continue;
             Image img = imageButtons[i].GetComponent<Image>();
             if (img != null && newSprites[i] != null)
