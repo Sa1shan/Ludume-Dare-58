@@ -1139,7 +1139,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: asdsadadddd
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1aeab75b755f0a746a641b676b45a560, type: 2}
   m_sharedMaterial: {fileID: -2536795224152965782, guid: 1aeab75b755f0a746a641b676b45a560, type: 2}
@@ -12231,17 +12231,28 @@ MonoBehaviour:
   player: {fileID: 4459864851433938283}
   pager: {fileID: 1942831231}
   tmPro: {fileID: 151634463}
-  notification: 'Check pager! Press [C]'
+  notification: Press [C] for open Pager
   notificationTmPro: {fileID: 1214756180}
   pages:
-  - 
-  - "So? Managed to get that weirdo out of PC?\r\nTry now to get Mark off his guitar
-    \r\nI bet he would make out with his own guitar, rather than get a real girlfriend."
-  - "Pretty messy work 4 u\r\nTry now to get Mark off his guitar \r\nI bet he would
-    make out with his own guitar, rather than get a real girlfriend."
-  - "RN all of them in living room, go straight there. \r\nThe spell for ritual ill
-    write u down later, just join ur friend in the room."
-  animationSpeed: 0.07
+  - text: "Yo, wassup? Have u heard about new sick trend? \r\nThe ritual is totally
+      LIT right now."
+    showInInitialSequence: 1
+  - text: 'You need to gather together with ur friends and say a spooky spell out
+      loud.  '
+    showInInitialSequence: 1
+  - text: '3 of u man gotta do it, you get me? '
+    showInInitialSequence: 1
+  - text: 'Get your and your friend''s butts and record all of this. '
+    showInInitialSequence: 1
+  - text: U can start with Daniell, hes easiest to get smth shitty to do
+    showInInitialSequence: 1
+  - text: "\u0428\u043C\u0430, \u0432\u0441\u0435 \u043E\u0442\u043B\u0438\u0447\u043D\u043E
+      \u0432\u0441\u0435 \u0447\u0435\u0442\u043A\u043E \u0440\u0430\u0431\u043E\u0442\u0430\u0435\u0442 "
+    showInInitialSequence: 0
+  - text: "\u0428\u043C\u0430, \u0418\u0434\u0438 \u043D\u0430\u0445\u0443\u0439"
+    showInInitialSequence: 0
+  letterAnimationSpeed: 0.05
+  delayBetweenPages: 1
   notificationAnimSpeed: 0
   startPosition: {x: 0, y: -387}
   endPosition: {x: 0, y: 0}

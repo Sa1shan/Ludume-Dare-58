@@ -28,53 +28,53 @@ namespace Source.GamePlayUI
         [SerializeField] private List<DialogLine> dialogueText = new List<DialogLine>();
 
         [SerializeField] private GameObject dialogueBackground;
-
         [SerializeField] private Button exitButton;
         [SerializeField] private Button startButtonStartMinigame;
         [SerializeField] private bool dialogue4;
-
         [HideInInspector] public bool dialogue4IsFinish;
 
-        private InteractiableController _interactiableController;
-        
         private bool _firstLineShown = false;
-
         private int currentIndex = 0;      // текущий индекс пары
-        private bool isAnimating = false;  // блокировка ЛКМ
+        private bool isAnimating = false;  // флаг анимации текста
 
         private UIManager _uiManager;
-        
+
+        private List<Tween> activeTweens = new List<Tween>(); // все текущие DelayedCall
+        private TextMeshProUGUI currentTMP; // текущий текстовый TMP для анимации
+        private string currentFullText;     // полный текст текущей строки
+
         private void Start()
         {
-            _interactiableController = GetComponent<InteractiableController>();
             tmp1.text = "";
             nameTmp1.text = "";
             _uiManager = UIManager.Instance;
+
+            // Можно повесить кнопку выхода на SkipAnimation
+            if (exitButton != null)
+            {
+                exitButton.onClick.AddListener(SkipAnimation);
+            }
         }
 
         private void Update()
         {
-            if (dialogueBackground.gameObject.activeSelf)
+            if (dialogueBackground.activeSelf)
             {
-                // Показываем первый элемент один раз, когда объект активен
-                if (!_firstLineShown)
+                // Показываем первый элемент один раз
+                if (!_firstLineShown && dialogueText.Count > 0)
                 {
-                    if (dialogueText.Count > 0)
-                    {
-                        ShowNextPair(auto: true);
-                        _firstLineShown = true;
-                    }
+                    ShowNextPair(auto: true);
+                    _firstLineShown = true;
                 }
 
-                // Все последующие строки по ЛКМ
-                if (Input.GetMouseButtonDown(0) && !isAnimating && _firstLineShown)
+                // ЛКМ: пропуск анимации или переход к следующему элементу
+                if (Input.GetMouseButtonDown(0))
                 {
-                    ShowNextPair();
+                    SkipAnimation();
                 }
             }
         }
 
-        // Немного изменяем ShowNextPair
         private void ShowNextPair(bool auto = false)
         {
             if (currentIndex >= dialogueText.Count)
@@ -98,61 +98,90 @@ namespace Source.GamePlayUI
             }
         }
 
+        private void SkipAnimation()
+        {
+            if (isAnimating)
+            {
+                // Отменяем все DelayedCall
+                foreach (var tween in activeTweens)
+                {
+                    tween.Kill();
+                }
+                activeTweens.Clear();
+
+                // Показываем весь текст сразу
+                if (currentTMP != null)
+                {
+                    currentTMP.text = currentFullText;
+                }
+
+                isAnimating = false;
+            }
+            else
+            {
+                // Переходим к следующей строке
+                ShowNextPair();
+            }
+        }
+
         private void AnimateText(TextMeshProUGUI textTMP, string text)
         {
             if (textTMP == null) return;
 
             isAnimating = true;
             textTMP.text = "";
+            currentTMP = textTMP;
+            currentFullText = text;
 
             float delay = 0f;
+            activeTweens.Clear();
 
             for (int i = 0; i < text.Length; i++)
             {
                 char c = text[i];
 
-                DOVirtual.DelayedCall(delay, () =>
+                Tween t = DOVirtual.DelayedCall(delay, () =>
                 {
                     textTMP.text += c;
                 });
+                activeTweens.Add(t);
 
-                // задержка только если символ не пробел
                 if (c != ' ')
                 {
                     delay += animationSpeed;
                 }
             }
 
-            // После окончания анимации разрешаем ЛКМ
-            DOVirtual.DelayedCall(delay, () =>
+            Tween finalTween = DOVirtual.DelayedCall(delay, () =>
             {
                 isAnimating = false;
+                activeTweens.Clear();
             });
+            activeTweens.Add(finalTween);
         }
-
 
         private void OnDialogEnd()
         {
-            dialogueBackground.gameObject.SetActive(false); 
-            if(!dialogue4) startButtonStartMinigame.gameObject.SetActive(true);
+            dialogueBackground.SetActive(false);
+
+            if (!dialogue4)
+                startButtonStartMinigame.gameObject.SetActive(true);
 
             if (dialogue4)
             {
                 dialogue4IsFinish = true;
                 Time.timeScale = 1;
-                
-                //
             }
-            if(!dialogue4IsFinish)
+
+            if (!dialogue4IsFinish)
             {
+                var _interactiableController = GetComponent<InteractiableController>();
                 foreach (var btn in _interactiableController.buttons)
                 {
                     if (btn == null) continue;
-                    // Полностью переинициализируем событие, чтобы удалить ВСЕ ссылки (включая добавленные в инспекторе)
-                    btn.onClick = new Button.ButtonClickedEvent();
+                    btn.onClick = new Button.ButtonClickedEvent(); // полностью очищаем события
                 }
             }
-            
         }
 
         public void RevertTimeScale()
