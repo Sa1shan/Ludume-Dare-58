@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Source.GamePlayUI;
 using UnityEngine.Playables;
-using UnityEngine.Serialization;
 
 namespace Source._2DInteractive
 {
@@ -29,13 +30,17 @@ namespace Source._2DInteractive
         [HideInInspector] public Rigidbody playerRb;
 
         [SerializeField] private DoorInteractor doorInteractor;
+        private MusicFader _musicFader;
+        private DialogueSystem _dialogueSystem;
         
         private void Start()
         {
+            _musicFader = GetComponent<MusicFader>();
             playerRb = player.GetComponent<Rigidbody>();
             blackBackground.gameObject.SetActive(false);
             background.gameObject.SetActive(false);
-
+            _dialogueSystem = GetComponent<DialogueSystem>();
+            
             // Устанавливаем прозрачность фона
             Color bgColor = blackBackground.color;
             bgColor.a = 1f;
@@ -68,8 +73,21 @@ namespace Source._2DInteractive
             StartInteraction();
         }
 
+        private void Update()
+        {
+            if (background.gameObject.activeSelf)
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+        }
+
         private void StartInteraction()
         {
+            if (_dialogueSystem.dialogue4)
+            {
+                _musicFader.ChangeMusic();
+            }
             doorInteractor.DoorIndexAddition();
             
             if (_iskeypressed) return; // Чтобы случайно не запускать дважды
@@ -82,9 +100,7 @@ namespace Source._2DInteractive
             {
                 button.gameObject.SetActive(true);
             }
-
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            
 
             DOVirtual.DelayedCall(delay, () =>
             {

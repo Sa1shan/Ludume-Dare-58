@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System.Collections;
 
 namespace Source.MiniGame.Puzzel
 {
@@ -22,6 +23,8 @@ namespace Source.MiniGame.Puzzel
         [Header("Радиус притягивания (в пикселях или единицах Canvas)")]
         [SerializeField] private float snapRadius;
         
+        private bool allFilled = false; // <-- добавлено
+        private bool canHidePuzzle = false; // <-- добавлено
 
         private List<List<Transform>> targetsForImage = new List<List<Transform>>();
 
@@ -48,12 +51,22 @@ namespace Source.MiniGame.Puzzel
             }
         }
 
+        private void Update()
+        {
+            // Проверяем нажатие ЛКМ, если можно скрыть пазл
+            if (canHidePuzzle && Input.GetMouseButtonDown(0))
+            {
+                puzzle.SetActive(false);
+                canHidePuzzle = false;
+            }
+        }
+
         public Transform GetSnapTarget(Vector3 position, int imageIndex)
         {
             if (imageIndex < 0 || imageIndex >= targetsForImage.Count) return null;
 
             Transform closest = null;
-            float minDist = snapRadius; // используем поле из инспектора
+            float minDist = snapRadius;
 
             foreach (var target in targetsForImage[imageIndex])
             {
@@ -67,10 +80,10 @@ namespace Source.MiniGame.Puzzel
         
             return closest;
         }
-        
+
         public bool AreAllTargetsFilled()
         {
-            float threshold = 0.1f; // погрешность для сравнения позиций
+            float threshold = 0.1f;
 
             for (int i = 0; i < targetsForImage.Count; i++)
             {
@@ -90,12 +103,18 @@ namespace Source.MiniGame.Puzzel
                         return false;
                 }
             }
-            puzzle.SetActive(false);
-            exitButton.SetActive(true);
+
+            if (!allFilled)
+            {
+                allFilled = true;
+                exitButton.SetActive(true);
+                canHidePuzzle = true; // <-- теперь ждём ЛКМ
+            }
+
             return true;
         }
-
     }
+
     public class DragUI : MonoBehaviour, IPointerDownHandler, IDragHandler, IEndDragHandler
     {
         [HideInInspector] public DragUIManager manager;
@@ -107,21 +126,20 @@ namespace Source.MiniGame.Puzzel
         private int originalSiblingIndex;
         private Transform originalParent;
 
+
         private void Start()
         {
             rectTransform = GetComponent<RectTransform>();
             canvas = GetComponentInParent<Canvas>();
             originalParent = transform.parent;
-            originalSiblingIndex = transform.GetSiblingIndex(); // запоминаем исходное место
+            originalSiblingIndex = transform.GetSiblingIndex();
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
             if (isLocked) return;
 
-            // Поднимаем объект на передний план
             transform.SetAsLastSibling();
-
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             Time.timeScale = 0;
@@ -132,16 +150,15 @@ namespace Source.MiniGame.Puzzel
             if (isLocked) return;
 
             if (RectTransformUtility.ScreenPointToWorldPointInRectangle(
-                canvas.transform as RectTransform,
-                eventData.position,
-                eventData.pressEventCamera,
-                out Vector3 worldPos))
+                    canvas.transform as RectTransform,
+                    eventData.position,
+                    eventData.pressEventCamera,
+                    out Vector3 worldPos))
             {
                 rectTransform.position = worldPos;
             }
         }
 
-        // Внутри DragUI
         public void OnEndDrag(PointerEventData eventData)
         {
             if (isLocked) return;
@@ -155,10 +172,7 @@ namespace Source.MiniGame.Puzzel
                 transform.SetSiblingIndex(originalSiblingIndex);
             }
 
-            // Сразу проверяем после дропа, все ли слоты заняты
             manager.AreAllTargetsFilled();
         }
-
-
     }
 }

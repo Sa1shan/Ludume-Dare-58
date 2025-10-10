@@ -30,7 +30,7 @@ namespace Source.GamePlayUI
         [SerializeField] private GameObject dialogueBackground;
         [SerializeField] private Button exitButton;
         [SerializeField] private Button startButtonStartMinigame;
-        [SerializeField] private bool dialogue4;
+        public bool dialogue4;
         [HideInInspector] public bool dialogue4IsFinish;
 
         private bool _firstLineShown = false;

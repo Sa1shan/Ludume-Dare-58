@@ -86,7 +86,6 @@ public class FootstepController_Rigidbody : MonoBehaviour
         lastClipIndex = index;
 
         // небольшое рандомное отклонение питча, чтобы звук не был одинаковый
-        audioSource.pitch = Random.Range(0.95f, 1.05f);
         audioSource.PlayOneShot(footstepClips[index]);
     }
 }

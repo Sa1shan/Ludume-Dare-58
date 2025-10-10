@@ -50,10 +50,6 @@ public class MiniGameController : MonoBehaviour
 
     private void Start()
     {
-        // Показываем системный курсор (на всякий случай)
-        Cursor.visible = true;
-        Cursor.lockState = CursorLockMode.None;
-
         if (finalPanel != null)
             finalPanel.SetActive(false);
 

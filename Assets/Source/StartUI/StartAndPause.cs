@@ -26,20 +26,6 @@ namespace Source.StartUI
                     Pause();
                 }
             }
-
-            if (Time.timeScale == 1)
-            {
-                player.cameraCanMove = true;
-                Cursor.lockState = CursorLockMode.Confined;
-                Cursor.visible = false;
-            }
-            else
-            {
-                player.cameraCanMove = false;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-            
         }
 
         private void Pause()
@@ -47,6 +33,9 @@ namespace Source.StartUI
             pauseMenu.SetActive(true);
             Time.timeScale = 0f;
             _isPaused = true;
+            player.cameraCanMove = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         private void Resume()
@@ -54,6 +43,9 @@ namespace Source.StartUI
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
             _isPaused = false;
+            player.cameraCanMove = true;
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = false;
         }
     }
 }

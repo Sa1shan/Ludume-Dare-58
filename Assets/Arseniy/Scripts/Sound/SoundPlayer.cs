@@ -25,9 +25,8 @@ public class SoundPlayer : MonoBehaviour
             Debug.LogWarning("SoundPlayer: Нет аудиоклипов для проигрывания");
             return;
         }
-
-        StopAllCoroutines(); // остановить старое проигрывание
-        StartCoroutine(PlaySequence());
+        
+        audioSource.PlayOneShot(clips[0]);
     }
 
     private IEnumerator PlaySequence()
@@ -38,7 +37,7 @@ public class SoundPlayer : MonoBehaviour
 
             audioSource.clip = clip;
             audioSource.volume = volume;
-            audioSource.Play();
+            audioSource.PlayOneShot(clip);
 
             // Ждем пока проиграется
             yield return new WaitForSeconds(clip.length);
